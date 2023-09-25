@@ -7,6 +7,8 @@ import com.example.pooptube.R
 import com.example.pooptube.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +20,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://www.googleapis.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val mostPopularApiService = retrofit.create(MostPopularVideosService::class.java)
+        val categoryVideosService = retrofit.create(CategoryVideosService::class.java)
+        val categoryChannelsService = retrofit.create(CategoryChannelsService::class.java)
+
 
         viewPager = binding.mainViewpager
         adapter = MainPagerAdapter(this)
