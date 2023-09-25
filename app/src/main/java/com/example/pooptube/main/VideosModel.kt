@@ -4,5 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class VideosModel(
     @SerializedName("thumbnails")
-    var thumbnail: String,
+    var videoThumbnail: Int,
+    var videoTitle: String
 )
