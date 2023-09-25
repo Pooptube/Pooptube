@@ -1,21 +1,24 @@
-<?xml version="1.0"encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="100dp"
     tools:context=".myvideos.MyVideosFragment">
 
     <ImageView
-        android:id="@+id/myVideosBg"
+        android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="180dp"
+        android:src="@drawable/videodetail_sample"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/myVideosProfileCardView"
+        android:id="@+id/card_view"
         android:layout_width="120dp"
         android:layout_height="120dp"
         app:cardCornerRadius="100dp"
@@ -25,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/myVideosProfile"
+            android:id="@+id/profile_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="130dp"
@@ -36,29 +39,29 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/channerName"
+        android:id="@+id/channer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="My Poop Channel"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/myVideosProfileCardView"
-        app:layout_constraintStart_toStartOf="@+id/myVideosProfileCardView"
-        app:layout_constraintTop_toBottomOf="@+id/myVideosProfileCardView" />
+        app:layout_constraintEnd_toEndOf="@+id/card_view"
+        app:layout_constraintStart_toStartOf="@+id/card_view"
+        app:layout_constraintTop_toBottomOf="@+id/card_view" />
 
     <TextView
-        android:id="@+id/channelDescription"
+        android:id="@+id/channel_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Are you ready to embark on a journey intothe fascinating world of all things bathroom-related? Look no further! Our channel is dedicated to exploring the curious and sometimes humorous aspects of a topic that everyone encounters daily but rarely discusses openly – poop!"
+        android:text="Are you ready to embark on a journey intothe fascinating world of all things bathroom-related? Look no further! Our channel is dedicated to exploring the curious – poop!"
         android:textSize="16sp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/channerName"
-        app:layout_constraintStart_toStartOf="@+id/channerName"
-        app:layout_constraintTop_toBottomOf="@+id/channerName" />
+        app:layout_constraintEnd_toEndOf="@+id/channer_name"
+        app:layout_constraintStart_toStartOf="@+id/channer_name"
+        app:layout_constraintTop_toBottomOf="@+id/channer_name" />
 
     <TextView
         android:id="@+id/textView3"
@@ -68,15 +71,15 @@
         android:text="My Favorite Videos"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/channelDescription"
-        app:layout_constraintTop_toBottomOf="@+id/channelDescription" />
+        app:layout_constraintStart_toStartOf="@+id/channel_description"
+        app:layout_constraintTop_toBottomOf="@+id/channel_description" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/vidoesRecyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        android:id="@+id/vidoes_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="410dp"
+        app:layout_constraintTop_toTopOf="@+id/bg" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
