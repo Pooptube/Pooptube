@@ -21,16 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.googleapis.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val mostPopularApiService = retrofit.create(MostPopularVideosService::class.java)
-        val categoryVideosService = retrofit.create(CategoryVideosService::class.java)
-        val categoryChannelsService = retrofit.create(CategoryChannelsService::class.java)
-
-
         viewPager = binding.mainViewpager
         adapter = MainPagerAdapter(this)
         viewPager.adapter = adapter
