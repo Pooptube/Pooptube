@@ -5,18 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.pooptube.BuildConfig
 import com.example.pooptube.databinding.FragmentMyVideosBinding
-import com.example.pooptube.main.VideosApiService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.lang.StringBuilder
+import com.example.pooptube.main.MainActivity
 
 class MyVideosFragment : Fragment() {
 
@@ -41,5 +33,15 @@ class MyVideosFragment : Fragment() {
             }
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                (requireActivity() as MainActivity).openVideoDetailFragment()
+            }
+        })
     }
 }

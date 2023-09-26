@@ -9,6 +9,16 @@ class HomeVideoAdapter : RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder>(
 
     private var items: List<HomeVideoModel> = listOf()
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     inner class VideoViewHolder(private val binding: HomeItemVideoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HomeVideoModel) {
             // 각 요소에 데이터 바인딩
@@ -31,6 +41,9 @@ class HomeVideoAdapter : RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder>(
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         holder.bind(items[position])
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     fun setItems(data: List<HomeVideoModel>) {
