@@ -9,6 +9,16 @@ import com.example.pooptube.databinding.MyVideosItemBinding
 
 class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     private var oldItems = emptyList<YoutubeVideoItem>()
     class VideoHolder(itemView: MyVideosItemBinding) : RecyclerView.ViewHolder(itemView.root) {
         private val binding = itemView
@@ -28,6 +38,10 @@ class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
 
     override fun onBindViewHolder(holder: VideoHolder, position: Int) {
         (holder as VideoHolder).setData(oldItems[position])
+
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount(): Int {

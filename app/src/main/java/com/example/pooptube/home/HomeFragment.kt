@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pooptube.BuildConfig
-import com.example.pooptube.R
-import java.util.Date
 import com.example.pooptube.databinding.FragmentHomeBinding
 import com.example.pooptube.main.ApiConfig
+import com.example.pooptube.main.MainActivity
 import com.example.pooptube.myvideos.VideosModelList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +39,12 @@ class HomeFragment : Fragment() {
 
         homeChipAdapter = HomeChipAdapter()
         homeVideoAdapter = HomeVideoAdapter()
+
+        homeVideoAdapter.setOnItemClickListener(object : HomeVideoAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                (requireActivity() as MainActivity).openVideoDetailFragment()
+            }
+        })
 
         with(binding) {
             chipRecyclerView.adapter = homeChipAdapter
