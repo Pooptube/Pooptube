@@ -1,6 +1,7 @@
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.pooptube.databinding.HomeItemVideoBinding
 import com.example.pooptube.home.HomeVideoModel
 
@@ -11,8 +12,11 @@ class HomeVideoAdapter : RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder>(
     inner class VideoViewHolder(private val binding: HomeItemVideoBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: HomeVideoModel) {
             // 각 요소에 데이터 바인딩
-            // 예: Glide 라이브러리를 사용하여 이미지 로딩
-            // Glide.with(binding.root).load(item.imgThumbnail).into(binding.videoThumbnailImageView)
+            // Coil 라이브러리를 사용하여 이미지 로딩
+            binding.videoThumbnailImageView.load(item.imgThumbnail) {
+                crossfade(true)
+            }
+
             binding.titleText.text = item.title
             binding.subTitleText.text = "${item.author} · ${item.count} · ${item.dateTime} · ${if (item.isFavorite) "♡" else ""}"
         }

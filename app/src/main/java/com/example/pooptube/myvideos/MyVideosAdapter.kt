@@ -9,11 +9,11 @@ import com.example.pooptube.databinding.MyVideosItemBinding
 
 class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
 
-    private var oldItems = emptyList<VideosModelList.VideosModel>()
+    private var oldItems = emptyList<YoutubeVideoItem>()
     class VideoHolder(itemView: MyVideosItemBinding) : RecyclerView.ViewHolder(itemView.root) {
         private val binding = itemView
 
-        fun setData(data: VideosModelList.VideosModel){
+        fun setData(data: YoutubeVideoItem){
             binding.videoTitle.text =  data.snippet.title
             Glide.with(binding.root)
                 .load(data.snippet.thumbnails.high.url)
@@ -34,7 +34,7 @@ class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
         return oldItems.size
     }
 
-    fun setData(newList: List<VideosModelList.VideosModel>) {
+    fun setData(newList: List<YoutubeVideoItem>) {
         val videoDiff = MyVideosDiffUtil(oldItems, newList)
         val diff = DiffUtil.calculateDiff(videoDiff)
         oldItems = newList

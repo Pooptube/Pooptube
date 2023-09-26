@@ -12,7 +12,7 @@ class ApiConfig {
                 .addInterceptor { chain ->
                     val url = chain
                         .request()
-                        .url()
+                        .url
                         .newBuilder()
                         .addQueryParameter("key", BuildConfig.YOUTUBE_API_KEY)
                         .build()
