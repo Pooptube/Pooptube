@@ -3,8 +3,8 @@ package com.example.pooptube.myvideos
 import androidx.recyclerview.widget.DiffUtil
 
 class MyVideosDiffUtil (
-    private val oldList: List<VideosModelList.VideosModel>,
-    private val newList: List<VideosModelList.VideosModel>,
+    private val oldList: List<YoutubeVideoItem>,
+    private val newList: List<YoutubeVideoItem>,
 
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
