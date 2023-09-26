@@ -2,28 +2,42 @@ package com.example.pooptube.myvideos
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.pooptube.databinding.MyVideosItemBinding
-import com.example.pooptube.main.VideosModel
 
-class MyVideosAdapter(private val items: List<VideosModel>) : RecyclerView.Adapter<MyVideosAdapter.ViewHolder>() {
-    inner class ViewHolder(private val binding: MyVideosItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val videoThumbnail = binding.videoThumbnail
-        val videoTitle = binding.videoTitle
+class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
+
+    private var oldItems = emptyList<VideosModelList.VideosModel>()
+    class VideoHolder(itemView: MyVideosItemBinding) : RecyclerView.ViewHolder(itemView.root) {
+        private val binding = itemView
+
+        fun setData(data: VideosModelList.VideosModel){
+            binding.videoTitle.text =  data.snippet.title
+            Glide.with(binding.root)
+                .load(data.snippet.thumbnails.high.url)
+                .into(binding.videoThumbnail)
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyVideosAdapter.ViewHolder {
-        val binding = MyVideosItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyVideosAdapter.VideoHolder {
+        val view = MyVideosItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return VideoHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MyVideosAdapter.ViewHolder, position: Int) {
-        val item = items[position]
-        holder.videoThumbnail.setImageResource(item.videoThumbnail)
-        holder.videoTitle.text = item.videoTitle
+    override fun onBindViewHolder(holder: VideoHolder, position: Int) {
+        (holder as VideoHolder).setData(oldItems[position])
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return oldItems.size
+    }
+
+    fun setData(newList: List<VideosModelList.VideosModel>) {
+        val videoDiff = MyVideosDiffUtil(oldItems, newList)
+        val diff = DiffUtil.calculateDiff(videoDiff)
+        oldItems = newList
+        diff.dispatchUpdatesTo(this)
     }
 }
