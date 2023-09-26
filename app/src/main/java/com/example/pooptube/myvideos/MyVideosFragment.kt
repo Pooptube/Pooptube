@@ -5,20 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.pooptube.R
+import com.example.pooptube.BuildConfig
 import com.example.pooptube.databinding.FragmentMyVideosBinding
-import com.example.pooptube.main.VideosModel
+import com.example.pooptube.main.VideosApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.lang.StringBuilder
 
 class MyVideosFragment : Fragment() {
 
     private lateinit var binding: FragmentMyVideosBinding
-    private lateinit var adapter: MyVideosAdapter
-    private val videosModelList = mutableListOf<VideosModel>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var adapter = MyVideosAdapter()
+    private lateinit var viewModel: MyVideosViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,17 +30,16 @@ class MyVideosFragment : Fragment() {
     ): View? {
         binding = FragmentMyVideosBinding.inflate(layoutInflater)
 
-        videosModelList.add(VideosModel(R.drawable.videodetail_sample,"title111"))
-        videosModelList.add(VideosModel(R.drawable.videodetail_sample,"title222"))
-        videosModelList.add(VideosModel(R.drawable.videodetail_sample,"title333"))
-        videosModelList.add(VideosModel(R.drawable.videodetail_sample,"title444"))
-        videosModelList.add(VideosModel(R.drawable.videodetail_sample,"title555"))
-        videosModelList.add(VideosModel(R.drawable.videodetail_sample,"title666"))
-
-        adapter = MyVideosAdapter(videosModelList)
         binding.vidoesRecyclerView.adapter = adapter
-        binding.vidoesRecyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        binding.vidoesRecyclerView.layoutManager = GridLayoutManager(requireContext(),2,GridLayoutManager.VERTICAL,false)
 
+        viewModel = ViewModelProvider(this).get(MyVideosViewModel::class.java)
+
+        viewModel?.video?.observe(viewLifecycleOwner) {
+            if (it != null && it.items.isNotEmpty()) {
+                adapter.setData(it.items)
+            }
+        }
         return binding.root
     }
 }
