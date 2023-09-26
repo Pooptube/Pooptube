@@ -2,13 +2,13 @@ package com.example.pooptube.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.commit
 import androidx.viewpager2.widget.ViewPager2
 import com.example.pooptube.R
 import com.example.pooptube.databinding.ActivityMainBinding
+import com.example.pooptube.videodetail.VideoDetailFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,5 +43,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
+    }
+    fun openVideoDetailFragment() {
+        val fragment = VideoDetailFragment()
+        supportFragmentManager.commit {
+            replace(R.id.video_detail_container, fragment)
+            addToBackStack(null)
+        }
     }
 }
