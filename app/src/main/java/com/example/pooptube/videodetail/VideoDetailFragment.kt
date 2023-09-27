@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.example.pooptube.R
 import com.example.pooptube.databinding.FragmentVideoDetailBinding
 
 class VideoDetailFragment : Fragment() {
@@ -42,6 +44,23 @@ class VideoDetailFragment : Fragment() {
         videodetailShareContainer.setOnClickListener {
             shareVideo(videoUrl)
         }
+
+        var isFavorite = false
+        val btnLike = videodetailLikeContainer
+        val likeIcon = videodetailLikeIcon
+        likeIcon.setImageResource(if (isFavorite) R.drawable.ic_like_filled else R.drawable.ic_like_empty)
+
+        btnLike.setOnClickListener {
+            isFavorite = !isFavorite
+            val newIconResId = if (isFavorite) {
+                showToast("좋아요 리스트에 추가되었습니다")
+                R.drawable.ic_like_filled
+            } else {
+                showToast("좋아요 리스트에서 삭제되었습니다")
+                R.drawable.ic_like_empty
+            }
+            likeIcon.setImageResource(newIconResId)
+        }
     }
 
     private fun closeFragment() {
@@ -56,5 +75,9 @@ class VideoDetailFragment : Fragment() {
             type = "text/plain"
         }
         startActivity(Intent.createChooser(sendIntent, "공유하기"))
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
