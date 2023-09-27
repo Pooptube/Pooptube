@@ -1,6 +1,5 @@
 package com.example.pooptube.home
 
-import HomeVideoAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +11,7 @@ import com.example.pooptube.BuildConfig
 import com.example.pooptube.databinding.FragmentHomeBinding
 import com.example.pooptube.main.ApiConfig
 import com.example.pooptube.main.MainActivity
+import com.example.pooptube.myvideos.HomeFilterModel
 import com.example.pooptube.myvideos.VideosModelList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +40,18 @@ class HomeFragment : Fragment() {
         homeChipAdapter = HomeChipAdapter()
         homeVideoAdapter = HomeVideoAdapter()
 
+        homeChipAdapter.setOnChipClickListener(object : HomeChipAdapter.OnChipClickListener {
+            override fun onChipClick(position: Int, filterModel: HomeFilterModel?) {
+                if (filterModel != null) {
+                    // 클릭한 칩에 대한 카테고리만
+                    fetchPopularVideos(filterModel.categoryId)
+                } else {
+                    // 전체 카테고리에 대한 동영상을 불러옴
+                    fetchPopularVideos()
+                }
+            }
+        })
+
         homeVideoAdapter.setOnItemClickListener(object : HomeVideoAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 (requireActivity() as MainActivity).openVideoDetailFragment()
@@ -47,6 +59,7 @@ class HomeFragment : Fragment() {
         })
 
         with(binding) {
+            chipRecyclerView.itemAnimator = null
             chipRecyclerView.adapter = homeChipAdapter
             chipRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
@@ -59,18 +72,28 @@ class HomeFragment : Fragment() {
             fetchPopularVideos()
         }
 
-        // Chip 더미 데이터 생성 및 설정
-        val dummyFilterData = List(10) {
-            HomeFilterModel(category = "카테고리 $it")
-        }
-        homeChipAdapter.setItems(dummyFilterData)
+        // Chip 카테고리ID 설정
+        val categoryFilterData = listOf(
+            HomeFilterModel(category = "음악", categoryId = "10"),
+            HomeFilterModel(category = "스포츠", categoryId = "17"),
+            HomeFilterModel(category = "게임", categoryId = "20"),
+            HomeFilterModel(category = "동물", categoryId = "15"),
+            HomeFilterModel(category = "엔터", categoryId = "26"),
+            HomeFilterModel(category = "테크", categoryId = "28"),
+            HomeFilterModel(category = "뉴스", categoryId = "25")
+        )
+        homeChipAdapter.setItems(categoryFilterData)
     }
 
-    private fun fetchPopularVideos() {
-        val call = apiService.getVideoInfo(apiKey = BuildConfig.YOUTUBE_API_KEY, part = "snippet,statistics")
+    private fun fetchPopularVideos(categoryId: String? = null) {
+        // 로딩 시작
+        binding.progressBar.visibility = View.VISIBLE
+        val call = apiService.getVideoInfo(apiKey = BuildConfig.YOUTUBE_API_KEY, categoryId = categoryId, regionCode = "KR")
 
         call.enqueue(object : Callback<VideosModelList> {
             override fun onResponse(call: Call<VideosModelList>, response: Response<VideosModelList>) {
+                // 로딩 완료
+                binding.progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
                     val videoItems = response.body()?.items ?: emptyList()
 
@@ -82,8 +105,7 @@ class HomeFragment : Fragment() {
                             title = videoItem.snippet.title,
                             author = videoItem.snippet.channelTitle,
                             count = videoItem.statistics?.viewCount ?: "0",
-                            dateTime = videoItem.snippet.publishedAt, // API의 응답을 바탕으로 수정했습니다.
-                            isFavorite = false
+                            dateTime = videoItem.snippet.publishedAt // API의 응답을 바탕으로 수정했습니다.
                         )
                     }
 
@@ -96,6 +118,8 @@ class HomeFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<VideosModelList>, t: Throwable) {
+                // 로딩 완료
+                binding.progressBar.visibility = View.GONE
                 // 네트워크 오류나 데이터 처리 오류 등의 실패 사유를 처리합니다.
                 Toast.makeText(requireContext(), "Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }

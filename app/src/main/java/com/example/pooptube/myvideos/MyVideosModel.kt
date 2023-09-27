@@ -11,6 +11,11 @@ data class VideosModelList(
     val items: List<YoutubeVideoItem>
 )
 
+data class HomeFilterModel(
+    val category: String,
+    val categoryId: String
+)
+
 data class YoutubeVideoItem(
     @SerializedName("snippet")
     val snippet: VideoSnippet,

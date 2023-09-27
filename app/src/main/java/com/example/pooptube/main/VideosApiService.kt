@@ -9,11 +9,13 @@ interface VideosApiService {
     @GET("videos")
     fun getVideoInfo(
         @Query("key") apiKey: String,
-        @Query("part") part: String = "snippet",
+        @Query("part") part: String = "snippet, statistics",
         @Query("chart") order: String = "mostPopular",
         @Query("type") type: String = "video",
         @Query("maxResults") maxResults: Int = 20,
         // 카테고리를 필터링하려면 이 값을 설정, 필터링하지 않으려면 null
-        @Query("videoCategoryId") categoryId: String? = null
+        @Query("videoCategoryId") categoryId: String? = null,
+        // KR만
+        @Query("regionCode") regionCode: String = "KR"
     ): Call<VideosModelList>
 }
