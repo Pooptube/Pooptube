@@ -16,4 +16,11 @@ interface VideosApiService {
         // 카테고리를 필터링하려면 이 값을 설정, 필터링하지 않으려면 null
         @Query("videoCategoryId") categoryId: String? = null
     ): Call<VideosModelList>
+    @GET("search")
+    fun searchVideoInfo(
+        @Query("key") apiKey: String,
+        @Query("part") part: String = "snippet",
+        @Query("q") query: String,
+        @Query("maxResults") maxResults: Int = 20
+    ): Call<VideosModelList>
 }
