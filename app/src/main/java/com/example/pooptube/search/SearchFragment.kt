@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pooptube.databinding.FragmentSearchBinding
+import com.example.pooptube.myvideos.ItemSpacingDecoration
 import com.example.pooptube.myvideos.MyVideosAdapter
 
 class SearchFragment : Fragment() {
@@ -15,6 +16,7 @@ class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
     private var adapter = MyVideosAdapter()
     private lateinit var viewModel: SearchViewModel
+    private val itemSpacingDecoration = ItemSpacingDecoration(10)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +32,9 @@ class SearchFragment : Fragment() {
         viewModel.searchResults.observe(viewLifecycleOwner) {
             if (it != null && it.items.isNotEmpty()) {
                 adapter.setData(it.items)
+                if (binding.vidoesRecyclerView.itemDecorationCount == 0) {
+                    binding.vidoesRecyclerView.addItemDecoration(itemSpacingDecoration)
+                }
             }
         }
 
@@ -42,7 +47,6 @@ class SearchFragment : Fragment() {
                 binding.emptyMsg.visibility = View.VISIBLE
             }
         }
-
         return binding.root
     }
 }
