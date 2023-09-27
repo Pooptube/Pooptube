@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pooptube.BuildConfig
 import com.example.pooptube.databinding.FragmentHomeBinding
 import com.example.pooptube.main.ApiConfig
 import com.example.pooptube.main.MainActivity
+import com.example.pooptube.myvideos.HomeFilterModel
 import com.example.pooptube.myvideos.VideosModelList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +45,7 @@ class HomeFragment : Fragment() {
         homeChipAdapter.setOnChipClickListener(object : HomeChipAdapter.OnChipClickListener {
             override fun onChipClick(position: Int, filterModel: HomeFilterModel) {
                 // 칩이 선택되었을 때 카테고리에 따라 비디오 목록을 필터링하거나 업데이트
+                fetchPopularVideos(filterModel.categoryId)
             }
         })
 
@@ -66,15 +69,22 @@ class HomeFragment : Fragment() {
             fetchPopularVideos()
         }
 
-        // Chip 더미 데이터 생성 및 설정
-        val dummyFilterData = List(10) {
-            HomeFilterModel(category = "카테고리 $it")
-        }
-        homeChipAdapter.setItems(dummyFilterData)
+        // Chip 카테고리ID 설정
+        val categoryFilterData = listOf(
+            HomeFilterModel(category = "음악", categoryId = "10"),
+            HomeFilterModel(category = "스포츠", categoryId = "17"),
+            HomeFilterModel(category = "게임", categoryId = "20"),
+            HomeFilterModel(category = "동물", categoryId = "15"),
+            HomeFilterModel(category = "여행", categoryId = "19"),
+            HomeFilterModel(category = "VLOG", categoryId = "21"),
+            HomeFilterModel(category = "영화", categoryId = "30"),
+            HomeFilterModel(category = "뉴스", categoryId = "25")
+        )
+        homeChipAdapter.setItems(categoryFilterData)
     }
 
-    private fun fetchPopularVideos() {
-        val call = apiService.getVideoInfo(apiKey = BuildConfig.YOUTUBE_API_KEY, part = "snippet,statistics")
+    private fun fetchPopularVideos(categoryId: String? = null) {
+        val call = apiService.getVideoInfo(apiKey = BuildConfig.YOUTUBE_API_KEY, categoryId = categoryId, regionCode = "KR")
 
         call.enqueue(object : Callback<VideosModelList> {
             override fun onResponse(call: Call<VideosModelList>, response: Response<VideosModelList>) {

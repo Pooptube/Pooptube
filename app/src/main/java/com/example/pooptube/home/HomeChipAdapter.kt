@@ -2,6 +2,7 @@ package com.example.pooptube.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.example.pooptube.myvideos.HomeFilterModel
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pooptube.databinding.FilterChipBinding
 import com.google.android.material.chip.Chip
@@ -36,6 +37,8 @@ class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
                 } else {
                     selectedPosition = adapterPosition
                     binding.categoryChip.alpha = 1.0f
+                    // 칩이 선택되면 리스너 호출
+                    listener?.onChipClick(adapterPosition, items[adapterPosition])
                 }
                 notifyItemChanged(previouslySelected)
                 notifyItemChanged(selectedPosition)
