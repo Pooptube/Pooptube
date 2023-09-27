@@ -40,6 +40,12 @@ class HomeFragment : Fragment() {
         homeChipAdapter = HomeChipAdapter()
         homeVideoAdapter = HomeVideoAdapter()
 
+        homeChipAdapter.setOnChipClickListener(object : HomeChipAdapter.OnChipClickListener {
+            override fun onChipClick(position: Int, filterModel: HomeFilterModel) {
+                // 칩이 선택되었을 때 카테고리에 따라 비디오 목록을 필터링하거나 업데이트
+            }
+        })
+
         homeVideoAdapter.setOnItemClickListener(object : HomeVideoAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 (requireActivity() as MainActivity).openVideoDetailFragment()
@@ -47,6 +53,7 @@ class HomeFragment : Fragment() {
         })
 
         with(binding) {
+            chipRecyclerView.itemAnimator = null
             chipRecyclerView.adapter = homeChipAdapter
             chipRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 

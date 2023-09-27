@@ -10,10 +10,42 @@ class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
 
     // 카테고리 목록을 저장하기 위한 변수
     private var items: List<HomeFilterModel> = listOf()
+    // 선택된 칩이 없는 상태라서 -1로 설정
+    private var selectedPosition = -1
+
+    interface OnChipClickListener {
+        fun onChipClick(position: Int, filterModel: HomeFilterModel)
+    }
+
+    private var listener: OnChipClickListener? = null
+
+    fun setOnChipClickListener(listener: OnChipClickListener) {
+        this.listener = listener
+    }
 
     inner class ChipViewHolder(private val binding: FilterChipBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: HomeFilterModel) {
+        fun bind(item: HomeFilterModel, position: Int) {
             binding.categoryChip.text = item.category
+
+            // 칩 클릭 리스너 설정
+            binding.categoryChip.setOnClickListener {
+                val previouslySelected = selectedPosition
+                if (selectedPosition == adapterPosition) {
+                    selectedPosition = -1
+                    binding.categoryChip.alpha = 0.35f
+                } else {
+                    selectedPosition = adapterPosition
+                    binding.categoryChip.alpha = 1.0f
+                }
+                notifyItemChanged(previouslySelected)
+                notifyItemChanged(selectedPosition)
+            }
+
+            // 선택된 상태에 따른 알파 값(투명도) 조절
+            binding.categoryChip.alpha = if (position == selectedPosition) 1.0f else 0.35f
+
+            // 칩 선택 상태 설정
+            binding.categoryChip.isChecked = position == selectedPosition
         }
     }
 
@@ -29,7 +61,7 @@ class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ChipViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], position)
     }
 
     override fun getItemCount(): Int {
