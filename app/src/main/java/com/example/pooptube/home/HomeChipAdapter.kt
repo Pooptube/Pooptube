@@ -48,7 +48,7 @@ class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
             }
 
             // 선택된 상태에 따른 알파 값(투명도) 조절
-            binding.categoryChip.alpha = if (position == selectedPosition) 1.0f else 0.35f
+            binding.categoryChip.alpha = if (position == selectedPosition) 1.0f else 0.50f
 
             // 칩 선택 상태 설정
             binding.categoryChip.isChecked = position == selectedPosition
