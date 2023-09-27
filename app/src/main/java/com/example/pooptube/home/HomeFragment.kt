@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pooptube.BuildConfig
 import com.example.pooptube.databinding.FragmentHomeBinding
@@ -43,9 +42,14 @@ class HomeFragment : Fragment() {
         homeVideoAdapter = HomeVideoAdapter()
 
         homeChipAdapter.setOnChipClickListener(object : HomeChipAdapter.OnChipClickListener {
-            override fun onChipClick(position: Int, filterModel: HomeFilterModel) {
-                // 칩이 선택되었을 때 카테고리에 따라 비디오 목록을 필터링하거나 업데이트
-                fetchPopularVideos(filterModel.categoryId)
+            override fun onChipClick(position: Int, filterModel: HomeFilterModel?) {
+                if (filterModel != null) {
+                    // 클릭한 칩에 대한 카테고리만
+                    fetchPopularVideos(filterModel.categoryId)
+                } else {
+                    // 전체 카테고리에 대한 동영상을 불러옴
+                    fetchPopularVideos()
+                }
             }
         })
 

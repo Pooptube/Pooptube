@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import com.example.pooptube.myvideos.HomeFilterModel
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pooptube.databinding.FilterChipBinding
-import com.google.android.material.chip.Chip
 
 class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
 
@@ -15,7 +14,7 @@ class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
     private var selectedPosition = -1
 
     interface OnChipClickListener {
-        fun onChipClick(position: Int, filterModel: HomeFilterModel)
+        fun onChipClick(position: Int, filterModel: HomeFilterModel?)
     }
 
     private var listener: OnChipClickListener? = null
@@ -31,9 +30,13 @@ class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
             // 칩 클릭 리스너 설정
             binding.categoryChip.setOnClickListener {
                 val previouslySelected = selectedPosition
+
+                // 같은 칩을 다시 선택한 경우
                 if (selectedPosition == adapterPosition) {
                     selectedPosition = -1
                     binding.categoryChip.alpha = 0.35f
+                    // null을 전달하여 전체 카테고리를 나타냄
+                    listener?.onChipClick(position, null)
                 } else {
                     selectedPosition = adapterPosition
                     binding.categoryChip.alpha = 1.0f
