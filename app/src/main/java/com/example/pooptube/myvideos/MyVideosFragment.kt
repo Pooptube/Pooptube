@@ -40,7 +40,10 @@ class MyVideosFragment : Fragment() {
 
         adapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                (requireActivity() as MainActivity).openVideoDetailFragment()
+                val videoData = viewModel.video.value
+                if (videoData != null && position >= 0 && position < videoData.items.size) {
+                    (requireActivity() as MainActivity).openVideoDetailFragment(videoData, position)
+                }
             }
         })
     }
