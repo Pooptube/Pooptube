@@ -44,14 +44,6 @@ class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
         holder.itemView.setOnClickListener {
             listener?.onItemClick(position)
         }
-        if (position % 2 == 0) {
-            holder.itemView.setPadding(
-                holder.itemView.paddingLeft,
-                holder.itemView.paddingTop,
-                0,
-                holder.itemView.paddingBottom
-            )
-        }
     }
 
     override fun getItemCount(): Int {
@@ -63,16 +55,5 @@ class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
         val diff = DiffUtil.calculateDiff(videoDiff)
         oldItems = newList
         diff.dispatchUpdatesTo(this)
-    }
-}
-
-class ItemSpacingDecoration(
-    private val spacing: Int
-) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.left = spacing
-        outRect.right = spacing
-        outRect.top = spacing
-        if (parent.getChildAdapterPosition(view) % 2 == 0) { outRect.right = 0 }
     }
 }
