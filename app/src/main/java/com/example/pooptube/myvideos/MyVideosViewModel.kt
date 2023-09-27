@@ -19,7 +19,7 @@ class MyVideosViewModel : ViewModel() {
     }
 
     private fun  getVideoList() {
-        val client = ApiConfig.getService().getVideoInfo(BuildConfig.YOUTUBE_API_KEY, "snippet", "mostPopular", "video", 10)
+        val client = ApiConfig.getService().getVideoInfo(BuildConfig.YOUTUBE_API_KEY, "snippet", "mostPopular", "video", 20)
         client.enqueue(object : Callback<VideosModelList>{
             override fun onResponse(
                 call: Call<VideosModelList>,
@@ -32,7 +32,6 @@ class MyVideosViewModel : ViewModel() {
                     }
                 }
             }
-
             override fun onFailure(call: Call<VideosModelList>, t: Throwable) {
                 TODO("Not yet implemented")
             }
