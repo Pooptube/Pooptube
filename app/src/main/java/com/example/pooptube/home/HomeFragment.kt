@@ -1,6 +1,5 @@
 package com.example.pooptube.home
 
-import HomeVideoAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -106,8 +105,7 @@ class HomeFragment : Fragment() {
                             title = videoItem.snippet.title,
                             author = videoItem.snippet.channelTitle,
                             count = videoItem.statistics?.viewCount ?: "0",
-                            dateTime = videoItem.snippet.publishedAt, // API의 응답을 바탕으로 수정했습니다.
-                            isFavorite = false
+                            dateTime = videoItem.snippet.publishedAt // API의 응답을 바탕으로 수정했습니다.
                         )
                     }
 

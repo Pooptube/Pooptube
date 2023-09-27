@@ -9,7 +9,7 @@ interface VideosApiService {
     @GET("videos")
     fun getVideoInfo(
         @Query("key") apiKey: String,
-        @Query("part") part: String = "snippet",
+        @Query("part") part: String = "snippet, statistics",
         @Query("chart") order: String = "mostPopular",
         @Query("type") type: String = "video",
         @Query("maxResults") maxResults: Int = 20,

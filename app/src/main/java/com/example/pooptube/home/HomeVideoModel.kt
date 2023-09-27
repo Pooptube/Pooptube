@@ -14,7 +14,6 @@ data class HomeVideoModel(
     val author: String,
     val count: String,
     val dateTime: Date,
-    val isFavorite: Boolean
 )
 
 //data class YoutubeVideoItem(
