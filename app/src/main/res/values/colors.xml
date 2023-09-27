@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="selected_background_color">#A52A2A</color>
+    <!--    #59는 투명도 35%-->
+    <color name="default_background_color">#59A52A2A</color>
 </resources>

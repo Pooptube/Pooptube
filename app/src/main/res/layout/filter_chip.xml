@@ -1,5 +1,9 @@
 <com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Widget.Material3.Chip.Filter.Elevated"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/category_chip"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    style="@style/MyChipStyle"
+    android:checkable="true"
+    app:chipBackgroundColor="@color/chip_background_selector"
+    app:checkedIconVisible="false" />
