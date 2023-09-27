@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pooptube.BuildConfig
 import com.example.pooptube.databinding.FragmentHomeBinding
 import com.example.pooptube.main.ApiConfig
-import com.example.pooptube.main.MainActivity
+//import com.example.pooptube.main.MainActivity
 import com.example.pooptube.myvideos.HomeFilterModel
 import com.example.pooptube.myvideos.VideosModelList
+//import com.example.pooptube.myvideos.YoutubeVideoItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +28,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeChipAdapter: HomeChipAdapter
     private lateinit var homeVideoAdapter: HomeVideoAdapter
     private val apiService = ApiConfig.getService()
+//    private var selectedVideoData: VideosModelList? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,11 +54,15 @@ class HomeFragment : Fragment() {
             }
         })
 
-        homeVideoAdapter.setOnItemClickListener(object : HomeVideoAdapter.OnItemClickListener {
+        /*homeVideoAdapter.setOnItemClickListener(object : HomeVideoAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                (requireActivity() as MainActivity).openVideoDetailFragment()
+                val videoData = selectedVideoData
+                if (videoData != null) {
+                    (requireActivity() as MainActivity).openVideoDetailFragment(videoData)
+                }
             }
-        })
+        })*/
+
 
         with(binding) {
             chipRecyclerView.itemAnimator = null
