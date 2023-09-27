@@ -18,4 +18,11 @@ interface VideosApiService {
         // KR만
         @Query("regionCode") regionCode: String = "KR"
     ): Call<VideosModelList>
+    @GET("search")
+    fun searchVideoInfo(
+        @Query("key") apiKey: String,
+        @Query("part") part: String = "snippet",
+        @Query("q") query: String,
+        @Query("maxResults") maxResults: Int = 20
+    ): Call<VideosModelList>
 }

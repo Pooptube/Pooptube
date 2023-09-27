@@ -40,6 +40,15 @@
         tools:listitem="@layout/my_videos_item"
         android:layout_marginTop="75dp"/>
 
+    <TextView
+        android:id="@+id/empty_msg"
+        android:text="검색 결과가 없습니다."
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="75dp" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

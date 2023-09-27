@@ -1,26 +1,23 @@
-package com.example.pooptube.myvideos
+package com.example.pooptube.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pooptube.BuildConfig
 import com.example.pooptube.main.ApiConfig
+import com.example.pooptube.myvideos.VideosModelList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MyVideosViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
 
-    private val _video = MutableLiveData<VideosModelList>()
-    val video: LiveData<VideosModelList> = _video
+    private val _searchResults = MutableLiveData<VideosModelList>()
+    val searchResults: LiveData<VideosModelList> = _searchResults
 
-    init {
-        getVideoList()
-    }
-
-    private fun  getVideoList() {
-        val client = ApiConfig.getService().getVideoInfo(BuildConfig.YOUTUBE_API_KEY, "snippet", "mostPopular", "video", 20)
-        client.enqueue(object : Callback<VideosModelList>{
+     fun searchVideoList(query: String) {
+        val client = ApiConfig.getService().searchVideoInfo(BuildConfig.YOUTUBE_API_KEY, "snippet", query, 20)
+        client.enqueue(object : Callback<VideosModelList> {
             override fun onResponse(
                 call: Call<VideosModelList>,
                 response: Response<VideosModelList>
@@ -28,11 +25,12 @@ class MyVideosViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val data = response.body()
                     if (data != null && data.items.isNotEmpty()) {
-                        _video.value = data
+                        _searchResults.value = data
                     }
                 }
             }
             override fun onFailure(call: Call<VideosModelList>, t: Throwable) {
+                // 실패 시 처리
                 TODO("Not yet implemented")
             }
         })

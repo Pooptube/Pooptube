@@ -23,11 +23,11 @@ class MyVideosFragment : Fragment() {
         binding = FragmentMyVideosBinding.inflate(layoutInflater)
 
         binding.vidoesRecyclerView.adapter = adapter
-        binding.vidoesRecyclerView.layoutManager = GridLayoutManager(requireContext(),2,GridLayoutManager.VERTICAL,false)
+        binding.vidoesRecyclerView.layoutManager = GridLayoutManager(requireContext(),2, GridLayoutManager.VERTICAL,false)
 
         viewModel = ViewModelProvider(this).get(MyVideosViewModel::class.java)
 
-        viewModel?.video?.observe(viewLifecycleOwner) {
+        viewModel.video.observe(viewLifecycleOwner) {
             if (it != null && it.items.isNotEmpty()) {
                 adapter.setData(it.items)
             }
