@@ -64,20 +64,6 @@ class HomeFragment : Fragment() {
             HomeFilterModel(category = "카테고리 $it")
         }
         homeChipAdapter.setItems(dummyFilterData)
-
-        // Video 더미 데이터 생성 및 설정
-//        val dummyData = List(20) {
-//            HomeVideoModel(
-//                imgThumbnail = "", // 여기에 썸네일 URL을 넣을 수 있습니다.
-//                channelLogoImg = "", // 채널 로고 URL
-//                title = "동영상 제목 $it",
-//                author = "채널명",
-//                count = "100만회",
-//                dateTime = Date(),
-//                isFavorite = it % 2 == 0 // 홀수 번째 아이템은 즐겨찾기 상태로 설정
-//            )
-//        }
-//        homeVideoAdapter.setItems(dummyData)
     }
 
     private fun fetchPopularVideos() {
