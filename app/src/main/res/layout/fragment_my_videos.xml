@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +7,10 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="100dp"
     tools:context=".myvideos.MyVideosFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/bg"
@@ -23,9 +27,7 @@
         android:layout_height="120dp"
         app:cardCornerRadius="100dp"
         android:layout_marginTop="120dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_centerHorizontal="true">
 
         <ImageView
             android:id="@+id/profile_image"
@@ -38,48 +40,47 @@
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/channer_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="My Poop Channel"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/card_view"
-        app:layout_constraintStart_toStartOf="@+id/card_view"
-        app:layout_constraintTop_toBottomOf="@+id/card_view" />
+        <TextView
+            android:id="@+id/channer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/card_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="130dp"
+            android:text="My Poop Channel"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <TextView
+        <TextView
         android:id="@+id/channel_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="Are you ready to embark on a journey intothe fascinating world of all things bathroom-related? Look no further! Our channel is dedicated to exploring the curious – poop!"
         android:textSize="16sp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/channer_name"
-        app:layout_constraintStart_toStartOf="@+id/channer_name"
-        app:layout_constraintTop_toBottomOf="@+id/channer_name" />
+        android:layout_alignTop="@+id/channer_name" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="My Favorite Videos"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/channel_description"
-        app:layout_constraintTop_toBottomOf="@+id/channel_description" />
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="100dp"
+        android:layout_alignTop="@+id/channel_description"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vidoes_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="410dp"
-        app:layout_constraintTop_toTopOf="@+id/bg" />
+        android:overScrollMode="never"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_marginTop="30dp"
+        android:padding="5dp" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</ScrollView>
