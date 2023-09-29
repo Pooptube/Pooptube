@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pooptube.databinding.FragmentSearchBinding
+import com.example.pooptube.main.MainActivity
 import com.example.pooptube.myvideos.MyVideosAdapter
 
 class SearchFragment : Fragment() {
@@ -43,5 +44,22 @@ class SearchFragment : Fragment() {
             }
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        adapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val videoData = viewModel.searchResults.value
+                if (videoData != null && position >= 0 && position < videoData.items.size) {
+                    (requireActivity() as MainActivity).openVideoDetailFragment(videoData, position)
+                    /*val videoId = videoData.items[position].videoId
+                    if (videoId != null) {
+                        (requireActivity() as MainActivity).openVideoDetailFragment(videoData, videoId, position)
+                    }*/
+                }
+            }
+        })
     }
 }
