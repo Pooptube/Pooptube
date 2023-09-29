@@ -9,6 +9,7 @@
     tools:context=".search.SearchFragment">
 
     <LinearLayout
+        android:id="@+id/search_area"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
@@ -35,11 +36,23 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chipRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_area"
+        tools:listitem="@layout/filter_chip" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vidoes_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         tools:listitem="@layout/my_videos_item"
-        android:layout_marginTop="75dp"/>
+        android:layout_marginTop="115dp"/>
 
     <TextView
         android:id="@+id/empty_msg"
@@ -49,7 +62,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="75dp" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
