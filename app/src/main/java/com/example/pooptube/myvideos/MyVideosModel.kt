@@ -26,6 +26,8 @@ data class YoutubeVideoItem(
     // Search에서는 Statistics 지원x , video에서는 있
     @SerializedName("statistics")
     val statistics: Statistics?
+    /*@SerializedName("id")
+    val videoId: String*/
 ) : Parcelable
 
 @Parcelize

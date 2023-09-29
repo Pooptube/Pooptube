@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/black"
     tools:context=".videodetail.VideoDetailFragment">
 
     <ImageView
@@ -39,7 +39,7 @@
         android:gravity="start"
         android:maxLines="2"
         android:text="YouTube Video Title"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="Channel Name"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -142,7 +142,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:text="Like"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -171,7 +171,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:text="Share"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="13sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -194,6 +194,6 @@
             android:paddingHorizontal="10dp"
             android:paddingBottom="20dp"
             android:text="Video Description"
-            android:textColor="@color/black" />
+            android:textColor="@color/white" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
