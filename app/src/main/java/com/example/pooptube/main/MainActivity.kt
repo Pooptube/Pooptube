@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         val bundle = Bundle()
 
         bundle.putParcelable("videoData", videoData)
+//        bundle.putString("videoId", videoId)
         bundle.putInt("position", position)
         fragment.arguments = bundle
 

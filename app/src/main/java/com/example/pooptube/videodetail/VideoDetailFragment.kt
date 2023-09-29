@@ -48,7 +48,7 @@ class VideoDetailFragment : Fragment() {
                     description = clickedItem.snippet.description,
                     dateTime = clickedItem.snippet.publishedAt,
                     viewCount = clickedItem.statistics?.viewCount ?: "0",
-                    videoId = clickedItem.videoId,
+//                    videoId = clickedItem.videoId,
                     isFavorite = false
                 )
 
@@ -77,9 +77,8 @@ class VideoDetailFragment : Fragment() {
 
         favoriteVideo(item)
 
-        videodetailShareContainer.setOnClickListener {
-            shareVideo(item.videoId)
-        }
+//        shareVideo(item.videoId)
+        shareVideo(item.thumbnail)
     }
 
     private fun favoriteVideo(viewModel: VideoDetailModel) = with(binding) {
@@ -106,14 +105,17 @@ class VideoDetailFragment : Fragment() {
         requireActivity().supportFragmentManager.popBackStack()
     }
 
-    private fun shareVideo(videoId: String) {
-        val videoUrl = "https://www.youtube.com/watch?v=$videoId"
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, videoUrl)
-            type = "text/plain"
+    private fun shareVideo(videoUrl: String) {
+        val btnShare = binding.videodetailShareContainer
+        btnShare.setOnClickListener {
+//            val videoUrl = "https://www.youtube.com/watch?v=$videoId"
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, videoUrl)
+                type = "text/plain"
+            }
+            startActivity(Intent.createChooser(sendIntent, "공유하기"))
         }
-        startActivity(Intent.createChooser(sendIntent, "공유하기"))
     }
 
     private fun showToast(message: String) {

@@ -10,6 +10,6 @@ data class VideoDetailModel (
     val description: String,
     val dateTime: Date,
     val viewCount: String,
-    val videoId: String,
+//    val videoId: String,
     var isFavorite: Boolean
 )
