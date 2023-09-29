@@ -13,9 +13,6 @@ import com.example.pooptube.main.MainActivity
 import com.example.pooptube.home.HomeChipAdapter
 import com.example.pooptube.myvideos.HomeFilterModel
 import com.example.pooptube.myvideos.MyVideosAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
 
@@ -27,7 +24,7 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater)
 
         binding.vidoesRecyclerView.adapter = myVideosAdapter
@@ -75,7 +72,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
+        myVideosAdapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val videoData = viewModel.searchResults.value
                 if (videoData != null && position >= 0 && position < videoData.items.size) {
