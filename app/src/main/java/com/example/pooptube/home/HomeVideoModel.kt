@@ -1,12 +1,15 @@
 package com.example.pooptube.home
 
+import android.os.Parcelable
 import com.example.pooptube.myvideos.YoutubeVideoItem
+import kotlinx.parcelize.Parcelize
 import java.util.Date
 
 data class HomeVideoResponse(
     val items: List<YoutubeVideoItem>
 )
 
+@Parcelize
 data class HomeVideoModel(
     val imgThumbnail: String,
     val channelLogoImg: String,
@@ -14,7 +17,7 @@ data class HomeVideoModel(
     val author: String,
     val count: String,
     val dateTime: Date,
-)
+): Parcelable
 
 //data class YoutubeVideoItem(
 //    val snippet: Snippet,
