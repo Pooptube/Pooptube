@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import coil.load
 import com.example.pooptube.R
 import com.example.pooptube.databinding.FragmentVideoDetailBinding
+import com.example.pooptube.home.HomeVideoModel
 import com.example.pooptube.myvideos.VideosModelList
 
 class VideoDetailFragment : Fragment() {
@@ -30,29 +31,58 @@ class VideoDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val bundle = arguments
         if (bundle != null) {
-            val videoData =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    bundle.getParcelable("videoData", VideosModelList::class.java)
-                } else {
-                    bundle.getParcelable("videoData")
+            val fragmentType = bundle.getInt("fragment", -1)
+
+            when (fragmentType) {
+                0 -> {
+                    // Home 프래그먼트에서 클릭한 경우
+                    val videoData =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            bundle.getParcelable("videoData", HomeVideoModel::class.java)
+                        } else {
+                            bundle.getParcelable("videoData")
+                        }
+                    if (videoData != null) {
+                        val videoModel = VideoDetailModel(
+                            thumbnail = videoData.imgThumbnail,
+                            title = videoData.title,
+                            channelProfile = videoData.imgThumbnail,
+                            channelId = videoData.author,
+                            description = "Video Description", // HomeVideoModel에는 description이 없어서 잠시 비워둠...
+                            dateTime = videoData.dateTime,
+                            viewCount = videoData.count,
+                            isFavorite = false
+                        )
+                        bind(videoModel)
+                    }
                 }
-            val position = bundle.getInt("position", -1)
 
-            if (videoData != null && position >= 0 && position < videoData.items.size) {
-                val clickedItem = videoData.items[position]
-                val videoModel = VideoDetailModel(
-                    thumbnail = clickedItem.snippet.thumbnails.medium.url,
-                    title = clickedItem.snippet.title,
-                    channelProfile = clickedItem.snippet.thumbnails.medium.url,   // 지금 쓰는 엔드포인트에는 없어서 thumbnail로 대체
-                    channelId = clickedItem.snippet.channelTitle,
-                    description = clickedItem.snippet.description,
-                    dateTime = clickedItem.snippet.publishedAt,
-                    viewCount = clickedItem.statistics?.viewCount ?: "0",
+                1 -> {
+                    // 다른 프래그먼트에서 클릭한 경우
+                    val videoData =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            bundle.getParcelable("videoData", VideosModelList::class.java)
+                        } else {
+                            bundle.getParcelable("videoData")
+                        }
+                    val position = bundle.getInt("position", -1)
+
+                    if (videoData != null && position >= 0 && position < videoData.items.size) {
+                        val clickedItem = videoData.items[position]
+                        val videoModel = VideoDetailModel(
+                            thumbnail = clickedItem.snippet.thumbnails.medium.url,
+                            title = clickedItem.snippet.title,
+                            channelProfile = clickedItem.snippet.thumbnails.medium.url,   // 지금 쓰는 엔드포인트에는 없어서 thumbnail로 대체
+                            channelId = clickedItem.snippet.channelTitle,
+                            description = clickedItem.snippet.description,
+                            dateTime = clickedItem.snippet.publishedAt,
+                            viewCount = clickedItem.statistics?.viewCount ?: "0",
 //                    videoId = clickedItem.videoId,
-                    isFavorite = false
-                )
-
-                bind(videoModel)
+                            isFavorite = false
+                        )
+                        bind(videoModel)
+                    }
+                }
             }
         }
 
