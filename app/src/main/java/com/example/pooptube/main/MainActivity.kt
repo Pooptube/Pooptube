@@ -6,6 +6,7 @@ import androidx.fragment.app.commit
 import androidx.viewpager2.widget.ViewPager2
 import com.example.pooptube.R
 import com.example.pooptube.databinding.ActivityMainBinding
+import com.example.pooptube.home.HomeVideoModel
 import com.example.pooptube.myvideos.VideosModelList
 import com.example.pooptube.videodetail.VideoDetailFragment
 import com.google.android.material.tabs.TabLayout
@@ -48,10 +49,25 @@ class MainActivity : AppCompatActivity() {
         }.attach()
     }
 
-    fun openVideoDetailFragment(videoData: VideosModelList, position: Int) {
+    fun openVideoDetailFromHome(videoModel: HomeVideoModel) {
         val fragment = VideoDetailFragment()
         val bundle = Bundle()
 
+        bundle.putInt("fragment", 0)
+        bundle.putParcelable("videoData", videoModel)
+        fragment.arguments = bundle
+
+        supportFragmentManager.commit {
+            replace(R.id.video_detail_container, fragment)
+            addToBackStack(null)
+        }
+    }
+
+    fun openVideoDetail(videoData: VideosModelList, position: Int) {
+        val fragment = VideoDetailFragment()
+        val bundle = Bundle()
+
+        bundle.putInt("fragment", 1)
         bundle.putParcelable("videoData", videoData)
 //        bundle.putString("videoId", videoId)
         bundle.putInt("position", position)
