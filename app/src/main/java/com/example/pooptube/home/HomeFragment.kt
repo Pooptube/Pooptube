@@ -8,19 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pooptube.BuildConfig
 import com.example.pooptube.databinding.FragmentHomeBinding
-import com.example.pooptube.main.ApiConfig
-//import com.example.pooptube.main.MainActivity
+import com.example.pooptube.main.MainActivity
 import com.example.pooptube.myvideos.HomeFilterModel
-import com.example.pooptube.myvideos.VideosModelList
-//import com.example.pooptube.myvideos.YoutubeVideoItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class HomeFragment : Fragment() {
@@ -28,14 +21,16 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homeChipAdapter: HomeChipAdapter
     private lateinit var homeVideoAdapter: HomeVideoAdapter
-    private val viewModel : HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,14 +51,11 @@ class HomeFragment : Fragment() {
             }
         })
 
-        /*homeVideoAdapter.setOnItemClickListener(object : HomeVideoAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val videoData = selectedVideoData
-                if (videoData != null) {
-                    (requireActivity() as MainActivity).openVideoDetailFragment(videoData)
-                }
+        homeVideoAdapter.setOnItemClickListener(object : HomeVideoAdapter.OnItemClickListener {
+            override fun onItemClick(videoModel: HomeVideoModel) {
+                (requireActivity() as MainActivity).openVideoDetailFromHome(videoModel)
             }
-        })*/
+        })
 
         with(binding) {
             chipRecyclerView.itemAnimator = null
@@ -100,4 +92,3 @@ class HomeFragment : Fragment() {
         viewModel.fetchPopularVideos(categoryId)
     }
 }
-
