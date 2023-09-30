@@ -42,7 +42,7 @@ class MyVideosFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 val videoData = viewModel.video.value
                 if (videoData != null && position >= 0 && position < videoData.items.size) {
-                    (requireActivity() as MainActivity).openVideoDetailFragment(videoData, position)
+                    (requireActivity() as MainActivity).openVideoDetail(videoData, position)
                 }
             }
         })
