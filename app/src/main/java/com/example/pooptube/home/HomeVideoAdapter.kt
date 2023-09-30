@@ -6,14 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.pooptube.databinding.HomeItemVideoBinding
 import java.util.Date
-import kotlin.math.floor
 
 class HomeVideoAdapter : RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder>() {
 
     private var items: List<HomeVideoModel> = listOf()
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClick(videoModel: HomeVideoModel)
     }
 
     private var listener: OnItemClickListener? = null
@@ -56,6 +55,10 @@ class HomeVideoAdapter : RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder>(
             }
             // 결과를 텍스트뷰에 설정합니다.
             binding.subTitleText.text = "${item.author} · 조회수 ${item.count} · $formattedDateTime"
+
+            itemView.setOnClickListener {
+                listener?.onItemClick(item)
+            }
         }
     }
 
@@ -70,7 +73,7 @@ class HomeVideoAdapter : RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder>(
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         holder.bind(items[position])
         holder.itemView.setOnClickListener {
-            listener?.onItemClick(position)
+            listener?.onItemClick(items[position])
         }
     }
 
