@@ -14,6 +14,7 @@ data class HomeVideoModel(
     val imgThumbnail: String,
     val channelLogoImg: String,
     val title: String,
+    val description: String,
     val author: String,
     val count: String,
     val dateTime: Date,

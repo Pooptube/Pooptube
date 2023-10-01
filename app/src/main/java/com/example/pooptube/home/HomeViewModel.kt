@@ -44,6 +44,7 @@ class HomeViewModel : ViewModel() {
                             imgThumbnail = videoItem.snippet.thumbnails.medium.url,
                             channelLogoImg = "...", // 쓸 수 있어서 남겨둠
                             title = videoItem.snippet.title,
+                            description = videoItem.snippet.description,
                             author = videoItem.snippet.channelTitle,
                             count = videoItem.statistics?.viewCount ?: "0",
                             dateTime = videoItem.snippet.publishedAt
