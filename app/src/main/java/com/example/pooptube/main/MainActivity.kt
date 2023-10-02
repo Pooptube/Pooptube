@@ -12,6 +12,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.pooptube.R
 import com.example.pooptube.databinding.ActivityMainBinding
 import com.example.pooptube.home.HomeVideoModel
+import com.example.pooptube.main.Constants.FRAGMENT
+import com.example.pooptube.main.Constants.VIDEODATA
 import com.example.pooptube.myvideos.VideosModelList
 import com.example.pooptube.videodetail.VideoDetailFragment
 import com.google.android.material.tabs.TabLayout
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var toolbar: Toolbar
     private lateinit var adapter: MainPagerAdapter
+    private val detailFragment = VideoDetailFragment()
+    private val bundle = Bundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,31 +116,23 @@ class MainActivity : AppCompatActivity() {
 
 
     fun openVideoDetailFromHome(videoModel: HomeVideoModel) {
-        val fragment = VideoDetailFragment()
-        val bundle = Bundle()
-
-        bundle.putInt("fragment", 0)
-        bundle.putParcelable("videoData", videoModel)
-        fragment.arguments = bundle
+        bundle.putInt(FRAGMENT, 0)
+        bundle.putParcelable(VIDEODATA, videoModel)
+        detailFragment.arguments = bundle
 
         supportFragmentManager.commit {
-            replace(R.id.video_detail_container, fragment)
+            replace(R.id.video_detail_container, detailFragment)
             addToBackStack(null)
         }
     }
 
     fun openVideoDetail(videoData: VideosModelList, position: Int) {
-        val fragment = VideoDetailFragment()
-        val bundle = Bundle()
-
-        bundle.putInt("fragment", 1)
-        bundle.putParcelable("videoData", videoData)
-//        bundle.putString("videoId", videoId)
-        bundle.putInt("position", position)
-        fragment.arguments = bundle
+        bundle.putInt(FRAGMENT, 1)
+        bundle.putParcelable(VIDEODATA, videoData.items[position])
+        detailFragment.arguments = bundle
 
         supportFragmentManager.commit {
-            replace(R.id.video_detail_container, fragment)
+            replace(R.id.video_detail_container, detailFragment)
             addToBackStack(null)
         }
     }
