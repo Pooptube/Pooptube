@@ -14,7 +14,7 @@
     <style name="MyTabLayout" parent="Widget.Design.AppBarLayout">
         <item name="tabBackground">@color/selected_background_color</item>
         <item name="tabIconTint">@color/white</item>
-        <item name="tabTextColor">@color/white</item>
+        <item name="tabTextColor">@color/main_tab_text_color_selector</item>
     </style>
 
     <style name="Theme.Pooptube" parent="Base.Theme.Pooptube" />
