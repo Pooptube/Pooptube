@@ -25,8 +25,8 @@
         android:background="@drawable/videodetail_btn_down_bg"
         android:padding="3dp"
         android:src="@drawable/ic_arrow_down"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/videodetail_thumbnail"
+        app:layout_constraintTop_toTopOf="@+id/videodetail_thumbnail"
         app:tint="@color/white" />
 
     <TextView
@@ -39,7 +39,6 @@
         android:gravity="start"
         android:maxLines="2"
         android:text="YouTube Video Title"
-        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +60,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:text="조회수"
-            android:textColor="#686868"
             android:textSize="11sp" />
 
         <TextView
@@ -69,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="업로드 날짜"
-            android:textColor="#686868"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -98,7 +95,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="Channel Name"
-            android:textColor="@color/white"
             android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -142,7 +138,6 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:text="Like"
-                android:textColor="@color/white"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -171,7 +166,6 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:text="Share"
-                android:textColor="@color/white"
                 android:textSize="13sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -193,7 +187,6 @@
             android:layout_marginTop="15dp"
             android:paddingHorizontal="10dp"
             android:paddingBottom="20dp"
-            android:text="Video Description"
-            android:textColor="@color/white" />
+            android:text="Video Description" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
