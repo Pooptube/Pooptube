@@ -78,4 +78,8 @@ class MainActivity : AppCompatActivity() {
             addToBackStack(null)
         }
     }
+
+    fun getViewPager2(): ViewPager2 {
+        return viewPager
+    }
 }
