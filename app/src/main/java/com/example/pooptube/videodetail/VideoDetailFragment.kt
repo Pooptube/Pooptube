@@ -54,7 +54,7 @@ class VideoDetailFragment : Fragment() {
                             title = videoData.title,
                             channelProfile = videoData.imgThumbnail,
                             channelId = videoData.author,
-                            description = "Video Description", // HomeVideoModel에는 description이 없어서 잠시 비워둠...
+                            description = videoData.description, // HomeVideoModel에는 description이 없어서 잠시 비워둠...
                             dateTime = videoData.dateTime,
                             viewCount = videoData.count,
                             isFavorite = false

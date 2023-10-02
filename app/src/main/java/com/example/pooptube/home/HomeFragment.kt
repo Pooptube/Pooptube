@@ -3,11 +3,13 @@ package com.example.pooptube.home
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pooptube.databinding.FragmentHomeBinding
 import com.example.pooptube.main.MainActivity
 import com.example.pooptube.myvideos.HomeFilterModel
@@ -50,6 +52,46 @@ class HomeFragment : Fragment() {
                 }
             }
         })
+
+        val viewPager2 = (requireActivity() as MainActivity).getViewPager2()
+
+        // ViewPage2 와 가로형 리싸이클러 뷰
+        binding.chipRecyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                when (e.action) {
+                    // 터치를 한 순간 x,y 좌표 저장
+                    MotionEvent.ACTION_DOWN -> {
+                        startX = e.x
+                        startY = e.y
+                    }
+                    // 터치한 상태에서 움직인 만큼의 x,y 좌표 차이 계산
+                    MotionEvent.ACTION_MOVE -> {
+                        val diffX = Math.abs(e.x - startX)
+                        val diffY = Math.abs(e.y - startY)
+
+                        // 수평으로 움직이는 거리와 수직으로 움직이는 거리를 비교하여
+                        // 수평 스크롤인 경우 ViewPager2의 스와이프를 비활성화하고,
+                        // 수직 스크롤인 경우 활성화합니다.
+                        viewPager2.isUserInputEnabled = diffX <= diffY
+                    }
+                    // 터치 취소를 감지 하면 ViewPager2의 스와이프를 다시 활성화
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        viewPager2.isUserInputEnabled = true
+                    }
+                }
+                // 리사이클러뷰의 기본 터치 동작을 방해하지 않기 위해 false를 반환
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+
+            private var startX = 0f
+            private var startY = 0f
+        })
+
+
 
         homeVideoAdapter.setOnItemClickListener(object : HomeVideoAdapter.OnItemClickListener {
             override fun onItemClick(videoModel: HomeVideoModel) {

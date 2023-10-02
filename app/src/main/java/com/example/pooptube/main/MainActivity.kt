@@ -106,4 +106,8 @@ class MainActivity : AppCompatActivity() {
         if (show) tabLayout.visibility = View.VISIBLE
         else tabLayout.visibility = View.GONE
     }
+    
+    fun getViewPager2(): ViewPager2 {
+        return viewPager
+    }
 }
