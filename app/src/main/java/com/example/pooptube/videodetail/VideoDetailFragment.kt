@@ -12,7 +12,9 @@ import coil.load
 import com.example.pooptube.R
 import com.example.pooptube.databinding.FragmentVideoDetailBinding
 import com.example.pooptube.home.HomeVideoModel
+import com.example.pooptube.main.MainActivity
 import com.example.pooptube.myvideos.VideosModelList
+import java.util.Date
 
 class VideoDetailFragment : Fragment() {
 
@@ -29,6 +31,10 @@ class VideoDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).showToolbar(false)
+        (requireActivity() as MainActivity).showTabLayout(false)
+
         val bundle = arguments
         if (bundle != null) {
             val fragmentType = bundle.getInt("fragment", -1)
@@ -93,6 +99,8 @@ class VideoDetailFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        (requireActivity() as MainActivity).showToolbar(true)
+        (requireActivity() as MainActivity).showTabLayout(true)
         _binding = null
     }
 
@@ -102,8 +110,8 @@ class VideoDetailFragment : Fragment() {
         videodetailChannelProfile.load(item.thumbnail)
         videodetailChannelName.text = item.channelId
         videodetailDescription.text = item.description
-        videodetailUpdatedDate.text = item.dateTime.toString()
-        videodetailViewcount.text = item.viewCount
+        videodetailUpdatedDate.text = formatDate(item.dateTime)
+        videodetailViewcount.text = formatViewCount(item.viewCount.toInt())
 
         favoriteVideo(item)
 
@@ -146,6 +154,45 @@ class VideoDetailFragment : Fragment() {
             }
             startActivity(Intent.createChooser(sendIntent, "공유하기"))
         }
+    }
+
+    private fun formatDate(dateTime: Date): String {
+        val currentTime = Date()
+        val timeDifferenceMillis = currentTime.time - dateTime.time
+
+        val secondsInMilli: Long = 1000
+        val minutesInMilli = secondsInMilli * 60
+        val hoursInMilli = minutesInMilli * 60
+        val daysInMilli = hoursInMilli * 24
+        val monthsInMilli = daysInMilli * 30
+        val yearsInMilli = daysInMilli * 365
+
+        val years = timeDifferenceMillis / yearsInMilli
+        val months = timeDifferenceMillis / monthsInMilli
+        val days = timeDifferenceMillis / daysInMilli
+        val hours = timeDifferenceMillis / hoursInMilli
+        val minutes = timeDifferenceMillis / minutesInMilli
+        val seconds = timeDifferenceMillis / secondsInMilli
+
+        return when {
+            years >= 1 -> "${years}년 전"
+            months >= 1 -> "${months}개월 전"
+            days >= 1 -> "${days}일 전"
+            hours >= 1 -> "${hours}시간 전"
+            minutes >= 1 -> "${minutes}분 전"
+            else -> "${seconds}초 전"
+        }
+    }
+
+    private fun formatViewCount(viewCount: Int): String {
+        val formattedViewCount = when {
+            viewCount == 0 -> "없음"
+            viewCount >= 100000000 -> "${viewCount / 100000000}.${viewCount % 100000000 / 10000000}억"
+            viewCount >= 10000 -> "${viewCount / 10000}.${viewCount % 10000 / 1000}만"
+            viewCount >= 1000 -> "${viewCount / 1000}.${viewCount % 1000 / 100}천"
+            else -> viewCount.toString()
+        }
+        return "조회수 $formattedViewCount"
     }
 
     private fun showToast(message: String) {
