@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         toolbar = binding.mainToolbar
         setSupportActionBar(toolbar)
+        // 기존 label title 사용x
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         val customToolbar: View? = layoutInflater.inflate(R.layout.custom_toolbar, toolbar, false)
         val logoImage = customToolbar?.findViewById<ImageView>(R.id.toolbar_logo)
