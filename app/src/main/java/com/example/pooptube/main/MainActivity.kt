@@ -130,9 +130,7 @@ class MainActivity : AppCompatActivity() {
         val bundle = Bundle()
 
         bundle.putInt("fragment", 1)
-        bundle.putParcelable("videoData", videoData)
-//        bundle.putString("videoId", videoId)
-        bundle.putInt("position", position)
+        bundle.putParcelable("videoData", videoData.items[position])
         fragment.arguments = bundle
 
         supportFragmentManager.commit {
