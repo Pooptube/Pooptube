@@ -1,5 +1,6 @@
 package com.example.pooptube.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,7 @@ class SearchViewModel : ViewModel() {
     private val _searchResults = MutableLiveData<VideosModelList>()
     val searchResults: LiveData<VideosModelList> = _searchResults
 
-     fun searchVideoList(query: String) {
+    fun searchVideoList(query: String) {
         val client = ApiConfig.getService().searchVideoInfo(BuildConfig.YOUTUBE_API_KEY, "snippet", query, 20)
         client.enqueue(object : Callback<VideosModelList> {
             override fun onResponse(
@@ -29,9 +30,10 @@ class SearchViewModel : ViewModel() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<VideosModelList>, t: Throwable) {
                 // 실패 시 처리
-                TODO("Not yet implemented")
+                Log.d("searchview", "$t")
             }
         })
     }
