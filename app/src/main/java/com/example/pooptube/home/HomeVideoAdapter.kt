@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.pooptube.databinding.HomeItemVideoBinding
 import com.example.pooptube.main.Utils
-import java.util.Date
 
 class HomeVideoAdapter : RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder>() {
 
@@ -34,8 +33,7 @@ class HomeVideoAdapter : RecyclerView.Adapter<HomeVideoAdapter.VideoViewHolder>(
 
             binding.titleText.text = item.title
 
-            val currentTime = Date()
-            val formattedDateTime = Utils.formatTimeDifference(currentTime, item.dateTime)
+            val formattedDateTime = Utils.formatTimeDifference(item.dateTime)
 
             // 결과를 텍스트뷰에 설정합니다.
             binding.subTitleText.text = "${item.author} · 조회수 ${Utils.formatViewCount(item.count.toInt())} · $formattedDateTime"
