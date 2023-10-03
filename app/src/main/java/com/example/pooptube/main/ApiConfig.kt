@@ -2,12 +2,15 @@ package com.example.pooptube.main
 
 import com.example.pooptube.BuildConfig
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiConfig {
     companion object {
         fun getService(): VideosApiService {
+            val interceptor = HttpLoggingInterceptor()
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .addInterceptor { chain ->
                     val url = chain
@@ -18,6 +21,7 @@ class ApiConfig {
                         .build()
                     chain.proceed(chain.request().newBuilder().url(url).build())
                 }
+                .addInterceptor(interceptor)
                 .build()
 
             val retrofit = Retrofit.Builder()

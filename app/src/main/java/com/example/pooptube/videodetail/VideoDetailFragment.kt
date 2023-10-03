@@ -1,8 +1,11 @@
 package com.example.pooptube.videodetail
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +15,17 @@ import coil.load
 import com.example.pooptube.R
 import com.example.pooptube.databinding.FragmentVideoDetailBinding
 import com.example.pooptube.home.HomeVideoModel
-import com.example.pooptube.myvideos.VideosModelList
+import com.example.pooptube.main.MainActivity
+import com.example.pooptube.main.Utils.formatTimeDifference
+import com.example.pooptube.main.Utils.formatViewCount
+import com.example.pooptube.myvideos.YoutubeVideoItem
 
 class VideoDetailFragment : Fragment() {
 
     private var _binding: FragmentVideoDetailBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +37,19 @@ class VideoDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).showToolbar(false)
+        (requireActivity() as MainActivity).showTabLayout(false)
+
+        sharedPreferences = requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+
+        // SharedPreferences 저장 됐는지 확인용
+        val likedVideoKeys = sharedPreferences.all.keys.filter { it.startsWith("liked_") }
+        for (key in likedVideoKeys) {
+            val isLiked = sharedPreferences.getBoolean(key, false)
+            Log.d("LikedVideos", "$key: $isLiked")
+        }
+
         val bundle = arguments
         if (bundle != null) {
             val fragmentType = bundle.getInt("fragment", -1)
@@ -48,10 +69,13 @@ class VideoDetailFragment : Fragment() {
                             title = videoData.title,
                             channelProfile = videoData.imgThumbnail,
                             channelId = videoData.author,
-                            description = videoData.description, // HomeVideoModel에는 description이 없어서 잠시 비워둠...
+                            description = videoData.description,
                             dateTime = videoData.dateTime,
                             viewCount = videoData.count,
-                            isFavorite = false
+                            isFavorite = sharedPreferences.getBoolean(
+                                "liked_${videoData.title}",
+                                false
+                            )
                         )
                         bind(videoModel)
                     }
@@ -61,24 +85,24 @@ class VideoDetailFragment : Fragment() {
                     // 다른 프래그먼트에서 클릭한 경우
                     val videoData =
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            bundle.getParcelable("videoData", VideosModelList::class.java)
+                            bundle.getParcelable("videoData", YoutubeVideoItem::class.java)
                         } else {
                             bundle.getParcelable("videoData")
                         }
-                    val position = bundle.getInt("position", -1)
 
-                    if (videoData != null && position >= 0 && position < videoData.items.size) {
-                        val clickedItem = videoData.items[position]
+                    if (videoData != null) {
                         val videoModel = VideoDetailModel(
-                            thumbnail = clickedItem.snippet.thumbnails.medium.url,
-                            title = clickedItem.snippet.title,
-                            channelProfile = clickedItem.snippet.thumbnails.medium.url,   // 지금 쓰는 엔드포인트에는 없어서 thumbnail로 대체
-                            channelId = clickedItem.snippet.channelTitle,
-                            description = clickedItem.snippet.description,
-                            dateTime = clickedItem.snippet.publishedAt,
-                            viewCount = clickedItem.statistics?.viewCount ?: "0",
-//                    videoId = clickedItem.videoId,
-                            isFavorite = false
+                            thumbnail = videoData.snippet.thumbnails.medium.url,
+                            title = videoData.snippet.title,
+                            channelProfile = videoData.snippet.thumbnails.medium.url,
+                            channelId = videoData.snippet.channelTitle,
+                            description = videoData.snippet.description,
+                            dateTime = videoData.snippet.publishedAt,
+                            viewCount = videoData.statistics?.viewCount ?: "0",
+                            isFavorite = sharedPreferences.getBoolean(
+                                "liked_${videoData.snippet.title}",
+                                false
+                            )
                         )
                         bind(videoModel)
                     }
@@ -93,6 +117,8 @@ class VideoDetailFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        (requireActivity() as MainActivity).showToolbar(true)
+        (requireActivity() as MainActivity).showTabLayout(true)
         _binding = null
     }
 
@@ -102,12 +128,10 @@ class VideoDetailFragment : Fragment() {
         videodetailChannelProfile.load(item.thumbnail)
         videodetailChannelName.text = item.channelId
         videodetailDescription.text = item.description
-        videodetailUpdatedDate.text = item.dateTime.toString()
-        videodetailViewcount.text = item.viewCount
+        videodetailUpdatedDate.text = formatTimeDifference(item.dateTime)
+        videodetailViewcount.text = "조회수 ${formatViewCount(item.viewCount.toInt())}"
 
         favoriteVideo(item)
-
-//        shareVideo(item.videoId)
         shareVideo(item.thumbnail)
     }
 
@@ -119,14 +143,13 @@ class VideoDetailFragment : Fragment() {
 
         btnLike.setOnClickListener {
             isFavorite = !isFavorite
-            val newIconResId = if (isFavorite) {
-                showToast("좋아요 리스트에 추가되었습니다")
-                R.drawable.ic_like_filled
-            } else {
-                showToast("좋아요 리스트에서 삭제되었습니다")
-                R.drawable.ic_like_empty
-            }
+            val newIconResId = if (isFavorite) R.drawable.ic_like_filled else R.drawable.ic_like_empty
             likeIcon.setImageResource(newIconResId)
+
+            val message = if (isFavorite) "좋아요 리스트에 추가되었습니다." else "좋아요 리스트에서 삭제되었습니다."
+            showToast(message)
+
+            sharedPreferences.edit().putBoolean("liked_${viewModel.title}", isFavorite).apply()
         }
     }
 
@@ -138,7 +161,6 @@ class VideoDetailFragment : Fragment() {
     private fun shareVideo(videoUrl: String) {
         val btnShare = binding.videodetailShareContainer
         btnShare.setOnClickListener {
-//            val videoUrl = "https://www.youtube.com/watch?v=$videoId"
             val sendIntent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, videoUrl)
