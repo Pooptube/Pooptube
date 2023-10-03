@@ -8,7 +8,7 @@ import java.util.Date
 @Parcelize
 data class VideosModelList(
     @SerializedName("nextPageToken")
-    val nextPageToken: String,
+    val nextPageToken: String? = null,
     @SerializedName("items")
     val items: List<YoutubeVideoItem>
 ) : Parcelable
@@ -16,6 +16,7 @@ data class VideosModelList(
 @Parcelize
 data class HomeFilterModel(
     val category: String,
+    @SerializedName("videoCategoryId")
     val categoryId: String
 ) : Parcelable
 
@@ -25,7 +26,9 @@ data class YoutubeVideoItem(
     val snippet: VideoSnippet,
     // Search에서는 Statistics 지원x , video에서는 있
     @SerializedName("statistics")
-    val statistics: Statistics?
+    val statistics: Statistics?,
+    @SerializedName("videoCategoryId")
+    val categoryId: String
     /*@SerializedName("id")
     val videoId: String*/
 ) : Parcelable
