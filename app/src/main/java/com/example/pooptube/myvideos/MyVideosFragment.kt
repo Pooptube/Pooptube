@@ -13,7 +13,7 @@ import com.example.pooptube.main.MainActivity
 class MyVideosFragment : Fragment() {
 
     private lateinit var binding: FragmentMyVideosBinding
-    private var adapter = MyVideosAdapter()
+    private var myVideosAdapter = MyVideosAdapter()
     private lateinit var viewModel: MyVideosViewModel
 
     override fun onCreateView(
@@ -22,14 +22,14 @@ class MyVideosFragment : Fragment() {
     ): View? {
         binding = FragmentMyVideosBinding.inflate(layoutInflater)
 
-        binding.vidoesRecyclerView.adapter = adapter
+        binding.vidoesRecyclerView.adapter = myVideosAdapter
         binding.vidoesRecyclerView.layoutManager = GridLayoutManager(requireContext(),2, GridLayoutManager.VERTICAL,false)
 
         viewModel = ViewModelProvider(this).get(MyVideosViewModel::class.java)
 
         viewModel.video.observe(viewLifecycleOwner) {
             if (it != null && it.items.isNotEmpty()) {
-                adapter.setData(it.items)
+                myVideosAdapter.setData(it.items)
             }
         }
         return binding.root
@@ -38,7 +38,7 @@ class MyVideosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
+        myVideosAdapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val videoData = viewModel.video.value
                 val isPositionInVideoData = position >= 0 && position < videoData?.items?.size!!

@@ -1,6 +1,7 @@
 package com.example.pooptube.search
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -54,19 +55,26 @@ class SearchFragment : Fragment() {
             chipRecyclerView.adapter = homeChipAdapter
             chipRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
-        // Chip 카테고리ID 설정
-        val categoryFilterData = listOf(
-            HomeFilterModel(category = "음악", categoryId = "10"),
-            HomeFilterModel(category = "스포츠", categoryId = "17"),
-            HomeFilterModel(category = "게임", categoryId = "20"),
-            HomeFilterModel(category = "동물", categoryId = "15"),
-            HomeFilterModel(category = "엔터", categoryId = "26"),
-            HomeFilterModel(category = "테크", categoryId = "28"),
-            HomeFilterModel(category = "뉴스", categoryId = "25")
-        )
-        homeChipAdapter.setItems(categoryFilterData)
+
+        homeChipAdapter.setOnChipClickListener(object : HomeChipAdapter.OnChipClickListener {
+            override fun onChipClick(position: Int, filterModel: HomeFilterModel?) {
+                if (filterModel != null) {
+                    // 클릭한 칩에 대한 카테고리만
+                    fetchSearchVideos(filterModel.categoryId)
+                } else {
+                    // 전체 카테고리에 대한 동영상을 불러옴
+                    fetchSearchVideos()
+                }
+            }
+        })
+        homeChipAdapter.setItems(viewModel.categoryFilterData)
 
         return binding.root
+    }
+
+    private fun fetchSearchVideos(categoryId: String? = null) {
+        val query = binding.searchBar.text.toString()
+        viewModel.searchVideoList(query, categoryId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
