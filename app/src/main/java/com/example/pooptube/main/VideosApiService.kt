@@ -23,6 +23,8 @@ interface VideosApiService {
         @Query("key") apiKey: String,
         @Query("part") part: String = "snippet",
         @Query("q") query: String,
-        @Query("maxResults") maxResults: Int = 20
+        @Query("type") type: String = "video",
+        @Query("maxResults") maxResults: Int = 20,
+        @Query("videoCategoryId") categoryId: String? = null
     ): Call<VideosModelList>
 }
