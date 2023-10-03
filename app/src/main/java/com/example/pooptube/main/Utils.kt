@@ -12,7 +12,8 @@ object Utils {
             else -> viewCount.toString()
         }
     }
-    fun formatTimeDifference(currentTime: Date, postedTime: Date): String {
+    fun formatTimeDifference(postedTime: Date): String {
+        val currentTime = Date()
         val timeDifferenceMillis = currentTime.time - postedTime.time
         // 현재 시간과 게시된 시간 사이의 차이를 계산합니다.
         val timeDifferenceSeconds = timeDifferenceMillis / 1000
