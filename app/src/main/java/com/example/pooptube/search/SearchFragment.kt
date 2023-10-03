@@ -1,11 +1,13 @@
 package com.example.pooptube.search
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,13 +42,15 @@ class SearchFragment : Fragment() {
         }
 
         binding.searchBtn.setOnClickListener {
-            val query = binding.searchBar.text.toString()
-            if (query.isNotEmpty()) {
-                viewModel.searchVideoList(query)
-                binding.emptyMsg.visibility = View.GONE
-            } else {
-                binding.emptyMsg.visibility = View.VISIBLE
+            performSearch()
+        }
+
+        binding.searchBar.setOnEditorActionListener{ _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch()
+                return@setOnEditorActionListener true
             }
+            false
         }
 
         // Coroutine을 사용하여 API 호출
@@ -85,12 +89,25 @@ class SearchFragment : Fragment() {
                 val videoData = viewModel.searchResults.value
                 if (videoData != null && position >= 0 && position < videoData.items.size) {
                     (requireActivity() as MainActivity).openVideoDetail(videoData, position)
-                    /*val videoId = videoData.items[position].videoId
-                    if (videoId != null) {
-                        (requireActivity() as MainActivity).openVideoDetailFragment(videoData, videoId, position)
-                }*/
                 }
             }
         })
+    }
+
+    private fun performSearch() {
+        val query = binding.searchBar.text.toString()
+        if (query.isNotEmpty()) {
+            viewModel.searchVideoList(query)
+            binding.emptyMsg.visibility = View.GONE
+        } else {
+            binding.emptyMsg.visibility = View.VISIBLE
+            myVideosAdapter.setData(emptyList())
+        }
+        hideKeyboardInput(binding.searchBar)
+    }
+
+    private fun hideKeyboardInput(view: View) {
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
