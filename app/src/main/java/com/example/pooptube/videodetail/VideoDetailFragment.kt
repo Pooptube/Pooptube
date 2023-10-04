@@ -34,7 +34,6 @@ class VideoDetailFragment : Fragment() {
         _binding = FragmentVideoDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -139,6 +138,8 @@ class VideoDetailFragment : Fragment() {
         val btnLike = videodetailLikeContainer
         val likeIcon = videodetailLikeIcon
         var isFavorite = viewModel.isFavorite
+        val thumbnail = viewModel.thumbnail
+        val title = viewModel.title
         likeIcon.setImageResource(if (isFavorite) R.drawable.ic_like_filled else R.drawable.ic_like_empty)
 
         btnLike.setOnClickListener {
@@ -149,7 +150,15 @@ class VideoDetailFragment : Fragment() {
             val message = if (isFavorite) "좋아요 리스트에 추가되었습니다." else "좋아요 리스트에서 삭제되었습니다."
             showToast(message)
 
-            sharedPreferences.edit().putBoolean("liked_${viewModel.title}", isFavorite).apply()
+            sharedPreferences.edit().apply {
+                putBoolean("liked_${viewModel.title}", isFavorite)
+                putString("thumbnail_${viewModel.title}", thumbnail)
+                putString("title_${viewModel.title}", title)
+                apply()
+            }
+            Log.d("VideoDetailFragment", "Is Favorite: ${sharedPreferences.getBoolean("liked_${viewModel.title}", false)}")
+            Log.d("VideoDetailFragment", "Thumbnail: ${sharedPreferences.getString("thumbnail_${viewModel.title}", "")}")
+            Log.d("VideoDetailFragment", "Title: ${sharedPreferences.getString("title_${viewModel.title}", "")}")
         }
     }
 

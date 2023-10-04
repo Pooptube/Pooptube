@@ -16,6 +16,7 @@ import com.example.pooptube.main.MainActivity
 import com.example.pooptube.home.HomeChipAdapter
 import com.example.pooptube.myvideos.HomeFilterModel
 import com.example.pooptube.myvideos.MyVideosAdapter
+import com.example.pooptube.videodetail.VideoDetailModel.Companion.toModel
 
 class SearchFragment : Fragment() {
 
@@ -37,6 +38,9 @@ class SearchFragment : Fragment() {
 
         viewModel.searchResults.observe(viewLifecycleOwner) {
             if (it != null && it.items.isNotEmpty()) {
+                it.items.map { item ->
+                    item.toModel()
+                }
                 myVideosAdapter.setData(it.items)
             }
         }
