@@ -140,6 +140,10 @@ class VideoDetailFragment : Fragment() {
         var isFavorite = viewModel.isFavorite
         val thumbnail = viewModel.thumbnail
         val title = viewModel.title
+        val channelProfile = viewModel.title
+        val channelId = viewModel.title
+        val description = viewModel.title
+        val viewCount = viewModel.title
         likeIcon.setImageResource(if (isFavorite) R.drawable.ic_like_filled else R.drawable.ic_like_empty)
 
         btnLike.setOnClickListener {
@@ -154,11 +158,13 @@ class VideoDetailFragment : Fragment() {
                 putBoolean("liked_${viewModel.title}", isFavorite)
                 putString("thumbnail_${viewModel.title}", thumbnail)
                 putString("title_${viewModel.title}", title)
+                putString("channelProfile_${viewModel.title}", channelProfile)
+                putString("channelId_${viewModel.title}", channelId)
+                putString("description_${viewModel.title}", description)
+                putLong("dateTime_${viewModel.title}", viewModel.dateTime.time)
+                putString("viewCount_${viewModel.title}", viewCount)
                 apply()
             }
-            Log.d("VideoDetailFragment", "Is Favorite: ${sharedPreferences.getBoolean("liked_${viewModel.title}", false)}")
-            Log.d("VideoDetailFragment", "Thumbnail: ${sharedPreferences.getString("thumbnail_${viewModel.title}", "")}")
-            Log.d("VideoDetailFragment", "Title: ${sharedPreferences.getString("title_${viewModel.title}", "")}")
         }
     }
 
