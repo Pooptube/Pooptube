@@ -1,8 +1,10 @@
 package com.example.pooptube.videodetail
 
+import android.os.Parcelable
 import com.example.pooptube.myvideos.YoutubeVideoItem
+import kotlinx.parcelize.Parcelize
 import java.util.Date
-
+@Parcelize
 data class VideoDetailModel (
     val thumbnail: String,
     val title: String,
@@ -13,7 +15,7 @@ data class VideoDetailModel (
     val viewCount: String,
 //    val videoId: String,
     var isFavorite: Boolean
-) {
+): Parcelable {
     companion object {
         fun YoutubeVideoItem.toModel() : VideoDetailModel {
             return VideoDetailModel(

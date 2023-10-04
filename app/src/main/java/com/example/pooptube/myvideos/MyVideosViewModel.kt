@@ -22,17 +22,14 @@ class MyVideosViewModel : ViewModel() {
     val likedVideos: LiveData<List<VideoDetailModel>> = _likedVideos
 
 
-    private fun  getVideoList() {
+    fun getVideoList() {
         val client = ApiConfig.getService().getVideoInfo(BuildConfig.YOUTUBE_API_KEY, "snippet", "mostPopular", "video", 20)
         client.enqueue(object : Callback<VideosModelList>{
-            override fun onResponse(
-                call: Call<VideosModelList>,
-                response: Response<VideosModelList>
-            ) {
+            override fun onResponse(call: Call<VideosModelList>, response: Response<VideosModelList>) {
                 if (response.isSuccessful) {
                     val data = response.body()
                     if (data != null && data.items.isNotEmpty()) {
-                        _video.value = data
+                        _video.postValue(data)
                     }
                 }
             }
