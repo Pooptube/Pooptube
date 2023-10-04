@@ -31,22 +31,25 @@ class MyVideosFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MyVideosViewModel::class.java)
 
         viewModel.likedVideos.observe(viewLifecycleOwner) { updatedlList ->
-            myVideosAdapter.setVideoDetailModels(updatedlList)
+            myVideosAdapter.setData(updatedlList)
             Log.d("확인중", "Liked videos updated: ${updatedlList.size} items")
         }
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getVideoList()
+        viewModel.loadLikedVideos(requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.loadLikedVideos(requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE))
 
         myVideosAdapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val videoData = viewModel.video.value
-                val isPositionInVideoData = position >= 0 && position < videoData?.items?.size!!
-                if (videoData != null && isPositionInVideoData) {
+                if (videoData != null && position >= 0 && position < videoData.items.size) {
                     (requireActivity() as MainActivity).openVideoDetail(videoData, position)
                 }
             }
