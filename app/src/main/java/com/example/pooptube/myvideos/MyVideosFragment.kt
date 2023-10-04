@@ -1,6 +1,8 @@
 package com.example.pooptube.myvideos
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pooptube.databinding.FragmentMyVideosBinding
 import com.example.pooptube.main.MainActivity
+import com.example.pooptube.videodetail.VideoDetailModel
 
 class MyVideosFragment : Fragment() {
 
@@ -27,16 +30,17 @@ class MyVideosFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(MyVideosViewModel::class.java)
 
-        viewModel.video.observe(viewLifecycleOwner) {
-            if (it != null && it.items.isNotEmpty()) {
-                myVideosAdapter.setData(it.items)
-            }
+        viewModel.likedVideos.observe(viewLifecycleOwner) { updatedlList ->
+            myVideosAdapter.setVideoDetailModels(updatedlList)
+            Log.d("확인중", "Liked videos updated: ${updatedlList.size} items")
         }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.loadLikedVideos(requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE))
 
         myVideosAdapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pooptube.databinding.MyVideosItemBinding
+import com.example.pooptube.videodetail.VideoDetailModel
 
 class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
 
@@ -16,12 +17,14 @@ class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
     }
 
     private var listener: OnItemClickListener? = null
+    private var videoDetailModels = emptyList<VideoDetailModel>()
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 
     private var oldItems = emptyList<YoutubeVideoItem>()
+
     class VideoHolder(itemView: MyVideosItemBinding) : RecyclerView.ViewHolder(itemView.root) {
         private val binding = itemView
 
@@ -29,6 +32,12 @@ class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
             binding.videoTitle.text =  data.snippet.title
             Glide.with(binding.root)
                 .load(data.snippet.thumbnails.high.url)
+                .into(binding.videoThumbnail)
+        }
+        fun setSaveData(data: VideoDetailModel) {
+            binding.videoTitle.text = data.title
+            Glide.with(binding.root)
+                .load(data.thumbnail)
                 .into(binding.videoThumbnail)
         }
     }
@@ -40,6 +49,7 @@ class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
 
     override fun onBindViewHolder(holder: VideoHolder, position: Int) {
         (holder as VideoHolder).setData(oldItems[position])
+        holder.setSaveData(videoDetailModels[position])
 
         holder.itemView.setOnClickListener {
             listener?.onItemClick(position)
@@ -48,6 +58,11 @@ class MyVideosAdapter : RecyclerView.Adapter<MyVideosAdapter.VideoHolder>() {
 
     override fun getItemCount(): Int {
         return oldItems.size
+    }
+
+    fun setVideoDetailModels(newList: List<VideoDetailModel>) {
+        videoDetailModels = newList
+        notifyDataSetChanged()
     }
 
     fun setData(newList: List<YoutubeVideoItem>) {
