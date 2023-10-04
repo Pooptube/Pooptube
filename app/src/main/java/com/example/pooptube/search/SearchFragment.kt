@@ -21,7 +21,7 @@ import com.example.pooptube.videodetail.VideoDetailModel.Companion.toModel
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
-    private var myVideosAdapter = MyVideosAdapter()
+    private var searchAdapter = SearchAdapter()
     private var homeChipAdapter = HomeChipAdapter()
     private lateinit var viewModel: SearchViewModel
 
@@ -31,7 +31,7 @@ class SearchFragment : Fragment() {
     ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater)
 
-        binding.vidoesRecyclerView.adapter = myVideosAdapter
+        binding.vidoesRecyclerView.adapter = searchAdapter
         binding.vidoesRecyclerView.layoutManager = GridLayoutManager(requireContext(),2, GridLayoutManager.VERTICAL,false)
 
         viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
@@ -41,7 +41,7 @@ class SearchFragment : Fragment() {
                 it.items.map { item ->
                     item.toModel()
                 }
-                myVideosAdapter.setData(it.items)
+                searchAdapter.setData(it.items)
             }
         }
 
@@ -88,7 +88,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        myVideosAdapter.setOnItemClickListener(object : MyVideosAdapter.OnItemClickListener {
+        searchAdapter.setOnItemClickListener(object : SearchAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val videoData = viewModel.searchResults.value
                 if (videoData != null && position >= 0 && position < videoData.items.size) {
@@ -105,7 +105,7 @@ class SearchFragment : Fragment() {
             binding.emptyMsg.visibility = View.GONE
         } else {
             binding.emptyMsg.visibility = View.VISIBLE
-            myVideosAdapter.setData(emptyList())
+            searchAdapter.setData(emptyList())
         }
         hideKeyboardInput(binding.searchBar)
     }
