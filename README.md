@@ -59,7 +59,10 @@ targetSdk 33
 
 ### 기능 설명
 #### MainActivity
-
+- ToolBar에 앱 아이콘과 이름 설정
+- TabLayout과 ViewPager2를 사용한 프래그먼트 간의 화면 전환
+- VideoDetail 열기 위한 함수 설정
+  - openVideoDetailFromHome, openVideoDetail, openVideoDetailFromMyVideos
 
 #### HomeFragment
 - Most Popular Videos 목록 출력
@@ -70,3 +73,9 @@ targetSdk 33
 #### VideoDetailFragment
 
 #### MyVideoFragment
+- Bundle로부터 데이터 가져오기, 비디오 데이터 바인딩
+- 비디오 좋아요 처리
+  - 클릭 이벤트 처리로 아이콘의 상태를 변경
+  - SharedPreferences를 사용하여 상태 저장
+- 공유하기 기능
+  - Intent를 사용하여 공유 시트를 열리며 사용자가 다양한 공유 옵션을 선택할 수 있음
