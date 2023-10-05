@@ -34,13 +34,15 @@ class VideoDetailFragment : Fragment() {
         _binding = FragmentVideoDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         (requireActivity() as MainActivity).showToolbar(false)
         (requireActivity() as MainActivity).showTabLayout(false)
 
-        sharedPreferences = requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        sharedPreferences =
+            requireContext().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
 
         // SharedPreferences 저장 됐는지 확인용
         val likedVideoKeys = sharedPreferences.all.keys.filter { it.startsWith("liked_") }
@@ -69,8 +71,7 @@ class VideoDetailFragment : Fragment() {
                             channelProfile = videoData.imgThumbnail,
                             channelId = videoData.author,
                             description = videoData.description,
-                            dateTime = videoData.dateTime,
-                            viewCount = videoData.count,
+                            viewCount = videoData.count.toInt(),
                             isFavorite = sharedPreferences.getBoolean(
                                 "liked_${videoData.title}",
                                 false
@@ -96,8 +97,7 @@ class VideoDetailFragment : Fragment() {
                             channelProfile = videoData.snippet.thumbnails.medium.url,
                             channelId = videoData.snippet.channelTitle,
                             description = videoData.snippet.description,
-                            dateTime = videoData.snippet.publishedAt,
-                            viewCount = videoData.statistics?.viewCount ?: "0",
+                            viewCount = videoData.statistics?.viewCount?.toInt() ?: 0,
                             isFavorite = sharedPreferences.getBoolean(
                                 "liked_${videoData.snippet.title}",
                                 false
@@ -105,6 +105,18 @@ class VideoDetailFragment : Fragment() {
                         )
                         bind(videoModel)
                     }
+                }
+
+                2 -> {
+                    // myVideo 에서 클릭한 경우
+                    val videoData =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            bundle.getParcelable("videoData", VideoDetailModel::class.java)
+                        } else {
+                            bundle.getParcelable("videoData")
+                        }
+                    // Null 처리
+                    videoData?.apply { bind(this) }
                 }
             }
         }
@@ -127,8 +139,6 @@ class VideoDetailFragment : Fragment() {
         videodetailChannelProfile.load(item.thumbnail)
         videodetailChannelName.text = item.channelId
         videodetailDescription.text = item.description
-        videodetailUpdatedDate.text = formatTimeDifference(item.dateTime)
-        videodetailViewcount.text = "조회수 ${formatViewCount(item.viewCount.toInt())}"
 
         favoriteVideo(item)
         shareVideo(item.thumbnail)
@@ -140,15 +150,16 @@ class VideoDetailFragment : Fragment() {
         var isFavorite = viewModel.isFavorite
         val thumbnail = viewModel.thumbnail
         val title = viewModel.title
-        val channelProfile = viewModel.title
-        val channelId = viewModel.title
-        val description = viewModel.title
-        val viewCount = viewModel.title
+        val channelProfile = viewModel.thumbnail
+        val channelId = viewModel.channelId
+        val description = viewModel.description
+        val viewCount = viewModel.viewCount
         likeIcon.setImageResource(if (isFavorite) R.drawable.ic_like_filled else R.drawable.ic_like_empty)
 
         btnLike.setOnClickListener {
             isFavorite = !isFavorite
-            val newIconResId = if (isFavorite) R.drawable.ic_like_filled else R.drawable.ic_like_empty
+            val newIconResId =
+                if (isFavorite) R.drawable.ic_like_filled else R.drawable.ic_like_empty
             likeIcon.setImageResource(newIconResId)
 
             val message = if (isFavorite) "좋아요 리스트에 추가되었습니다." else "좋아요 리스트에서 삭제되었습니다."
@@ -161,8 +172,7 @@ class VideoDetailFragment : Fragment() {
                 putString("channelProfile_${viewModel.title}", channelProfile)
                 putString("channelId_${viewModel.title}", channelId)
                 putString("description_${viewModel.title}", description)
-                putLong("dateTime_${viewModel.title}", viewModel.dateTime.time)
-                putString("viewCount_${viewModel.title}", viewCount)
+                putInt("viewCount_${viewModel.title}", viewCount)
                 apply()
             }
         }

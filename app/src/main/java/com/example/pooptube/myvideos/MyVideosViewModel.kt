@@ -48,16 +48,19 @@ class MyVideosViewModel : ViewModel() {
                 val title = key.replace("liked_", "")
                 val thumbnail = sharedPreferences.getString("thumbnail_$title", "")
                 val videoTitle = sharedPreferences.getString("title_$title", "")
+                val channelProfile = sharedPreferences.getString("channelProfile_$title", "")
+                val channelId = sharedPreferences.getString("channelId_$title", "")
+                val description = sharedPreferences.getString("description_$title", "")
+                val viewCount = sharedPreferences.getInt("viewCount_$title", 0)
                 Log.d("확인중","$thumbnail $videoTitle")
                 // VideoDetailModel을 생성하여 likedVideos 리스트에 추가
                 val videoDetailModel = VideoDetailModel(
                     thumbnail = thumbnail ?: "",
                     title = videoTitle ?: "",
-                    channelProfile = "",
-                    channelId = "",
-                    description = "",
-                    dateTime = Date(),
-                    viewCount = "",
+                    channelProfile = channelProfile ?:"",
+                    channelId = channelId ?:"",
+                    description = description ?:"",
+                    viewCount = viewCount,
                     isFavorite = true
                 )
                 likedVideos.add(videoDetailModel)

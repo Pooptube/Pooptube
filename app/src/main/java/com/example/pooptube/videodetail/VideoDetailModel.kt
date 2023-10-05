@@ -11,8 +11,7 @@ data class VideoDetailModel (
     val channelProfile: String,
     val channelId: String,
     val description: String,
-    val dateTime: Date,
-    val viewCount: String,
+    val viewCount: Int,
 //    val videoId: String,
     var isFavorite: Boolean
 ): Parcelable {
@@ -24,8 +23,7 @@ data class VideoDetailModel (
                 channelProfile = this.snippet.thumbnails.default.url,
                 channelId = this.snippet.channelId,
                 description = this.snippet.description,
-                dateTime = this.snippet.publishedAt,
-                viewCount = this.statistics?.viewCount?: "0",
+                viewCount = this.statistics?.viewCount?.toInt() ?: 0,
                 isFavorite = false
             )
         }
