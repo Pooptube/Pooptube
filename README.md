@@ -68,9 +68,14 @@ targetSdk 33
 - Most Popular Videos 목록 출력
 - Chip을 통해 카테고리별 비디오 조회
   - ViewPager2 와 가로형 RecyclerView로 인해 CustomRecyclerView를 통한 Chip 영역에 ViewPager2 작동x
+
 #### SearchFragment
+- Search 엔드 포인트를 활용한 검색 키워드 비디오 목록 출력
+- Chip을 통해 검색한 키워드 안에서 카테고리별 비디오 재조회
 
 #### VideoDetailFragment
+- 좋아요한 비디오 리스트 가져오기
+  - SharedPreferences를 사용하여 저장한 비디오 가져오기
 
 #### MyVideoFragment
 - Bundle로부터 데이터 가져오기, 비디오 데이터 바인딩
