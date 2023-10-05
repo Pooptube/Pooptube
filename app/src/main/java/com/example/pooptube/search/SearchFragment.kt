@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -11,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pooptube.databinding.FragmentSearchBinding
 import com.example.pooptube.main.MainActivity
 import com.example.pooptube.home.HomeChipAdapter
@@ -76,6 +78,32 @@ class SearchFragment : Fragment() {
             }
         })
         homeChipAdapter.setItems(viewModel.categoryFilterData)
+
+        val viewPager2 = (requireActivity() as MainActivity).getViewPager2()
+        binding.chipRecyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                when (e.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        startX = e.x
+                        startY = e.y
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val diffX = Math.abs(e.x - startX)
+                        val diffY = Math.abs(e.y - startY)
+                        viewPager2.isUserInputEnabled = diffX <= diffY
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        viewPager2.isUserInputEnabled = true
+                    }
+                }
+                return false
+            }
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+
+            private var startX = 0f
+            private var startY = 0f
+        })
 
         return binding.root
     }
