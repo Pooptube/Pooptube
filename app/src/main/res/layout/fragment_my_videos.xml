@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="100dp"
+    tools:context=".myvideos.MyVideosFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:src="@drawable/videodetail_bg"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="100dp"
+        android:layout_marginTop="120dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:background="@drawable/videodetail_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/channer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/card_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="130dp"
+            android:text="My Poop Channel"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+        android:id="@+id/channel_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Are you ready to embark on a journey intothe fascinating world of allthings bathroom-related? Look no further! Our channel is dedicated to exploring the curious – poop!"
+        android:textSize="16sp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_alignTop="@+id/channer_name" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Favorite Videos"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="100dp"
+        android:layout_alignTop="@+id/channel_description"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vidoes_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_marginTop="30dp"
+        android:padding="5dp" />
+
+    </RelativeLayout>
+</ScrollView>

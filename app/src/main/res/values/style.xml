@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyChipStyle" parent="@style/Widget.Material3.Chip.Filter.Elevated">
+        <item name="android:background">@color/chip_background_selector</item>
+        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+</resources>
