@@ -16,6 +16,7 @@ import com.example.pooptube.main.Constants.FRAGMENT
 import com.example.pooptube.main.Constants.VIDEODATA
 import com.example.pooptube.myvideos.VideosModelList
 import com.example.pooptube.videodetail.VideoDetailFragment
+import com.example.pooptube.videodetail.VideoDetailModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -129,6 +130,17 @@ class MainActivity : AppCompatActivity() {
     fun openVideoDetail(videoData: VideosModelList, position: Int) {
         bundle.putInt(FRAGMENT, 1)
         bundle.putParcelable(VIDEODATA, videoData.items[position])
+        detailFragment.arguments = bundle
+
+        supportFragmentManager.commit {
+            replace(R.id.video_detail_container, detailFragment)
+            addToBackStack(null)
+        }
+    }
+
+    fun openVideoDetailFromMyVideos(videoData: List<VideoDetailModel>, position: Int) {
+        bundle.putInt(FRAGMENT, 2)
+        bundle.putParcelable(VIDEODATA, videoData[position])
         detailFragment.arguments = bundle
 
         supportFragmentManager.commit {
