@@ -8,9 +8,9 @@ import com.example.pooptube.databinding.FilterChipBinding
 
 class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
 
-    // 카테고리 목록을 저장하기 위한 변수
+    // 카테고리 목록을 저장하기 위한 변수.
     private var items: List<HomeFilterModel> = listOf()
-    // 선택된 칩이 없는 상태라서 -1로 설정
+    // 선택된 칩이 없는 상태라서 -1로 설정.
     private var selectedPosition = -1
 
     interface OnChipClickListener {
