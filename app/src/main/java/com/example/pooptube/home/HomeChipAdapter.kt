@@ -27,7 +27,7 @@ class HomeChipAdapter : RecyclerView.Adapter<HomeChipAdapter.ChipViewHolder>() {
         fun bind(item: HomeFilterModel, position: Int) {
             binding.categoryChip.text = item.category
 
-            // 칩 클릭 리스너 설정
+            // 칩 클릭 리스너 설정.
             binding.categoryChip.setOnClickListener {
                 val previouslySelected = selectedPosition
 
