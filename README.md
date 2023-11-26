@@ -74,13 +74,13 @@ targetSdk 33
 - Chip을 통해 검색한 키워드 안에서 카테고리별 비디오 재조회
 
 #### VideoDetailFragment
-- 좋아요한 비디오 리스트 가져오기
-  - SharedPreferences를 사용하여 저장한 비디오 가져오기
-
-#### MyVideoFragment
 - Bundle로부터 데이터 가져오기, 비디오 데이터 바인딩
 - 비디오 좋아요 처리
   - 클릭 이벤트 처리로 아이콘의 상태를 변경
   - SharedPreferences를 사용하여 상태 저장
 - 공유하기 기능
   - Intent를 사용하여 공유 시트를 열리며 사용자가 다양한 공유 옵션을 선택할 수 있음
+
+#### MyVideoFragment
+- 좋아요한 비디오 리스트 가져오기
+  - SharedPreferences를 사용하여 저장한 비디오 가져오기
